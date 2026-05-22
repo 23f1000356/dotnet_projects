@@ -1,9 +1,9 @@
-# P02 + P03 + P04 — Shell, theme, and modal Views
+# Practice FA App — P02 through P34 (WPF shell)
 
-**Stack:** WPF · `Frame` · `Page` · Resource dictionaries · `ShowDialog`  
-**Prerequisite:** [P01 — Clock-in board](../../projects/P01-ClockInBoard/)  
+**Stack:** WPF · `Frame` · `Page` · `UserControl` · Theme · `ShowDialog` · Menu · ToolBar  
+**Prerequisite:** [P01 — Clock-in board](../../projects/P01-ClockInBoard/) · [P32](../projects/P32-TwoWayBindingLab/) · [P33](../projects/P33-ValidationLab/) (separate labs)  
 **Location:** `src/PracticeFA.App/`  
-**Current:** P04 complete · **Next:** P32 TwoWay binding or P06 SQL login
+**Current:** P34 complete · **Next:** P06 SQL login · P10 capstone
 
 ---
 
@@ -19,13 +19,14 @@
 
 ---
 
-## Three UI levels (memorize for FA)
+## Four UI levels (memorize for FA — P34 checkpoint)
 
 ```text
-Window   →  MainWindow (shell — stays open)
-  Frame  →  MainFrame — swaps content
-    Page →  MasterPage, ReportsPage, …
-Window   →  Pop-up feature (P04) — Views/*
+Window      →  MainWindow (shell — Menu, ToolBar, sidebar, Frame)
+  Frame     →  MainFrame — swaps Page hubs
+    Page    →  MasterPage, ReportsPage, …
+    UserControl →  EmployeeSearchBox (reusable chunk inside Page or Window)
+Window      →  Pop-up feature (P04) — Views/*
 ```
 
 ```text
@@ -56,20 +57,18 @@ Window   →  Pop-up feature (P04) — Views/*
 
 ```text
 src/PracticeFA.App/
-  App.xaml                 → merges Assets/Theme.xaml globally
-  Assets/Theme.xaml        → P03 colors + Button + DataGrid styles
-  MainWindow.xaml          → shell: menu + Frame
-  MainWindow.xaml.cs       → navigation only
+  App.xaml                      → merges Assets/Theme.xaml
+  Assets/Theme.xaml             → P03 shared styles
+  MainWindow.xaml(.cs)         → P02 shell + P34 Menu + ToolBar
+  Controls/
+    EmployeeSearchBox.xaml(.cs) → P34 reusable badge search
   Models/
-    WipSummaryRow.cs       → sample grid rows (Reports)
-    ModuleIds.cs           → fake module ids (1001, 2001, 3001)
-  Views/
-    StyleWindow.xaml(.cs)  → module 1001 modal
-    BaggingWindow.xaml(.cs)→ module 2001 modal
-    MisWindow.xaml(.cs)    → module 3001 modal
+    WipSummaryRow.cs, ModuleIds.cs, SearchHostContext.cs
   Pages/
-    MasterPage.xaml(.cs)   → hub → ShowDialog Views
-    ReportsPage.xaml(.cs)  → MIS hub + DataGrid
+    MasterPage.xaml(.cs)        → hub + EmployeeSearchBox + P04 Views
+    ReportsPage.xaml(.cs)
+  Views/
+    StyleWindow, BaggingWindow (+ search control), MisWindow
 ```
 
 ---
@@ -556,6 +555,188 @@ if (dlg.ShowDialog() == true)
 
 ---
 
+## P34 — UserControl + Menu + ToolBar (detailed)
+
+**P34 completes the WPF pillar checkpoint** — you can explain **Frame vs Window vs UserControl** and how FA reuses UI chunks across screens.
+
+### The problem P34 solves
+
+FA repeats the same UI blocks everywhere: employee badge search, date range pickers, toolbars. Copy-pasting XAML into 200 screens is unmaintainable.
+
+**P34 rule:** extract a reusable **UserControl**, host it on **two parents** with **different `DataContext`**, and add **Menu** / **ToolBar** to the main shell like production FA.
+
+### What was added
+
+| Piece | File | Role |
+|-------|------|------|
+| UserControl | `Controls/EmployeeSearchBox.xaml` | Badge `TextBox` + Search button |
+| Dependency property | `BadgeText` | Parent binds or sets badge string (TwoWay) |
+| Routed event | `SearchRequested` | Parent handles search (like FA button click) |
+| Host context | `Models/SearchHostContext.cs` | Different data per parent |
+| Menu | `MainWindow` — File / View / Help | Same navigation as sidebar |
+| ToolBar | Refresh, Save (text buttons) | FA-style shell actions |
+
+### Four UI levels (with UserControl)
+
+```text
+MainWindow
+  Menu + ToolBar                    ← P34 shell chrome
+  Frame → MasterPage
+            EmployeeSearchBox       ← P34 UserControl (child of Page)
+  ShowDialog → BaggingWindow
+                  EmployeeSearchBox ← same control, different DataContext
+```
+
+| Type | Analogy | P34 example |
+|------|---------|-------------|
+| `Window` | App / dialog | `MainWindow`, `BaggingWindow` |
+| `Page` | Route / hub | `MasterPage` |
+| `UserControl` | Reusable React component | `EmployeeSearchBox` |
+| `Frame` | `<Outlet />` | `MainFrame` |
+
+### `EmployeeSearchBox` — dependency property
+
+```csharp
+public static readonly DependencyProperty BadgeTextProperty =
+    DependencyProperty.Register(
+        nameof(BadgeText), typeof(string), typeof(EmployeeSearchBox),
+        new FrameworkPropertyMetadata(string.Empty,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+```
+
+| Concept | Why |
+|---------|-----|
+| **Dependency property** | XAML can bind `BadgeText="{Binding SearchBadge}"` from parent |
+| **TwoWay by default** | Typing in the control updates parent’s `SearchBadge` |
+| **Routed event `SearchRequested`** | Bubble to parent — Search click without tight coupling |
+
+Internal TextBox binds to the control’s own DP:
+
+```xml
+Text="{Binding BadgeText, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+```
+
+`ElementName=Root` = bind to the UserControl’s `BadgeText`, not the parent’s DataContext directly (clean encapsulation).
+
+### Same control, two parents, two contexts
+
+**MasterPage** (`DataContext` = Master host):
+
+```csharp
+DataContext = new SearchHostContext("E101", "Master hub");
+```
+
+```xml
+<controls:EmployeeSearchBox
+    BadgeText="{Binding SearchBadge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+    SearchRequested="EmployeeSearch_SearchRequested"/>
+```
+
+**BaggingWindow** (`DataContext` = Bagging host):
+
+```csharp
+DataContext = new SearchHostContext("E205", "Bagging floor");
+```
+
+Same XAML control, different starting badge (`E101` vs `E205`) and different search message — proves **UserControl does not own business data**; the **parent’s DataContext** does.
+
+### Menu (same actions as sidebar)
+
+| Menu | Item | Code |
+|------|------|------|
+| File | Exit | `Exit_Click` → `Close()` |
+| View | Master | `NavigateToMaster()` |
+| View | Reports | `NavigateToReports()` |
+| Help | About | `About_Click` → MessageBox |
+
+**Acceptance:** View → Master does the same as clicking **Master** on the left panel.
+
+### ToolBar
+
+| Button | Behavior |
+|--------|----------|
+| **Refresh** | Re-runs `NavigateToMaster()` or `NavigateToReports()` for current hub |
+| **Save** | Placeholder MessageBox — P08 will call SQL |
+
+Status line: `ToolbarStatusText` in sidebar shows last toolbar action.
+
+### `MainWindow` layout (`DockPanel`)
+
+```text
+DockPanel
+  Menu (Top)
+  ToolBarTray (Top)
+  Grid — sidebar + Frame (fills rest)
+```
+
+Menu and ToolBar dock above content — standard FA / desktop app layout.
+
+### Page vs Window vs UserControl
+
+| | `Page` | `Window` | `UserControl` |
+|--|--------|----------|---------------|
+| Root of screen? | No — inside Frame | Yes — dialog or shell | No — always hosted |
+| P34 example | MasterPage | MainWindow, BaggingWindow | EmployeeSearchBox |
+| FA | `Pages/*` | `MainWindowNew`, `Views/*` | `Controls/*`, shared in Views |
+
+### End-to-end P34 flow
+
+```text
+1. App opens — Menu + ToolBar visible
+2. MasterPage shows EmployeeSearchBox bound to E101
+3. Change badge → Search → message uses [Master hub]
+4. View menu → Reports (or left button)
+5. Open Bagging Entry (P04) — dialog shows same search control
+6. Search there → message uses [Bagging floor] and E205 context
+7. Help → About
+8. ToolBar Refresh → reloads current page
+```
+
+### Floor Assistant mapping
+
+| P34 | Floor Assistant |
+|-----|-----------------|
+| `Controls/EmployeeSearchBox` | Shared search / filter controls |
+| `BadgeText` DP | Bindable parameters on composite controls |
+| `MainWindow` Menu | File / module / help menus |
+| ToolBar | Save, Refresh, Print on main shell |
+| UserControl in View + Page | Same XAML reused across modules |
+
+**FA homework:** grep `UserControl` in FA solution — open one `.xaml` under `Controls/` or `Views/`.
+
+### P34 acceptance checklist
+
+- [ ] Same `EmployeeSearchBox` on MasterPage and `BaggingWindow`
+- [ ] Different default badge / search message per host
+- [ ] Menu View → Master / Reports matches sidebar
+- [ ] Explain Frame vs Window vs UserControl
+
+### P34 experiments
+
+1. Add `EmployeeSearchBox` to `ReportsPage` with a third `SearchHostContext`.  
+2. Add ToolBar button **Print** calling MessageBox.  
+3. Bind `BadgeText="E999"` in XAML on one host only — see override vs binding.
+
+### What P34 does not cover
+
+- Custom control templates (full lookless controls)  
+- MVVM commands on ToolBar (P05)  
+- Real Refresh from SQL (P08)
+
+### Quick reference
+
+```xml
+xmlns:controls="clr-namespace:PracticeFA.App.Controls"
+<controls:EmployeeSearchBox BadgeText="{Binding SearchBadge, Mode=TwoWay}"
+                           SearchRequested="OnSearch"/>
+```
+
+```csharp
+DataContext = new SearchHostContext("E101", "Master hub");
+```
+
+---
+
 ## User journey
 
 1. App opens → **Master** in Frame  
@@ -624,9 +805,15 @@ Visual Studio: startup **PracticeFA.App** → **F5**.
 - [ ] `ShowDialog` blocks hub; `Owner` set  
 - [ ] Save/Cancel set `DialogResult`  
 
+**P34**
+
+- [ ] `EmployeeSearchBox` on Master + Bagging with different context  
+- [ ] Menu navigates like sidebar  
+- [ ] Explain Frame / Window / UserControl  
+
 **Next**
 
-- [ ] P32 binding lab or P06 SQL login  
+- [ ] P06 SQL login · P10 capstone  
 
 ---
 
@@ -651,5 +838,7 @@ Visual Studio: startup **PracticeFA.App** → **F5**.
 ## Learning path
 
 ```text
-P01 → P02 (shell) → P03 (theme) → P04 (Views/ShowDialog) → P32/P06 → P10 (mini FA)
+P01 → P02 (shell) → P32 (binding lab) → P03 (theme) → P04 (Views) → P33 (validation lab) → P34 (UserControl + Menu) → P06 (SQL) → P10
 ```
+
+**WPF pillar (this app):** P02 · P03 · P04 · P34 — plus P01 clock-in and P32/P33 in `projects/`.

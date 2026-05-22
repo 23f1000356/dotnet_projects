@@ -905,7 +905,7 @@ WPF **ValidationRules** or `IDataErrorInfo` / `INotifyDataErrorInfo` — block s
 
 ---
 
-## P34 — UserControl + menu/toolbar 🔲
+## P34 — UserControl + menu/toolbar ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1950,7 +1950,7 @@ Copy to `docs/my-progress.md` and tick dates.
 | P03 | Theme dictionary | ✅ | `src/PracticeFA.App/Assets/Theme.xaml` | |
 | P04 | Module launcher | ✅ | `src/PracticeFA.App/Views/*` | |
 | P33 | Validation | ✅ | `projects/P33-ValidationLab/` | |
-| P34 | UserControl + menu | | | |
+| P34 | UserControl + menu | ✅ | `src/PracticeFA.App/Controls/` | |
 | P06 | SQL login | | | |
 | P24 | Connection config | | | |
 | P07 | Role menu | | | |
