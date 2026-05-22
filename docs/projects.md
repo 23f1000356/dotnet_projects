@@ -876,7 +876,7 @@ Bind UI to a **data object** in code-behind using `INotifyPropertyChanged` (manu
 
 ---
 
-## P33 — Validation & ErrorTemplate 🔲
+## P33 — Validation & ErrorTemplate ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1949,7 +1949,7 @@ Copy to `docs/my-progress.md` and tick dates.
 | P32 | TwoWay binding | ✅ | `projects/P32-TwoWayBindingLab/` | |
 | P03 | Theme dictionary | ✅ | `src/PracticeFA.App/Assets/Theme.xaml` | |
 | P04 | Module launcher | ✅ | `src/PracticeFA.App/Views/*` | |
-| P33 | Validation | | | |
+| P33 | Validation | ✅ | `projects/P33-ValidationLab/` | |
 | P34 | UserControl + menu | | | |
 | P06 | SQL login | | | |
 | P24 | Connection config | | | |
