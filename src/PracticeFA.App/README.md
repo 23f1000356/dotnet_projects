@@ -772,6 +772,8 @@ dotnet run --project src/PracticeFA.App/PracticeFA.App.csproj
 
 **P07:** After login, `spGetUserModules` fills `AppState.AllowedModuleIds` — see [P07-README.md](../../database/P07-README.md).
 
+**P08:** Employee CRUD via stored procedures only — see [P08-README.md](../../database/P08-README.md).
+
 ---
 
 ## P07 — Role-based menu (summary)
@@ -873,9 +875,15 @@ Visual Studio: startup **PracticeFA.App** → **F5**.
 - [ ] operator1 vs operator2 see different launcher buttons  
 - [ ] “Your modules” list matches SSMS `spGetUserModules`  
 
+**P08**
+
+- [ ] Run `002_P08_Employees.sql`  
+- [ ] Employee maintenance (6001) — Add/Edit/Delete/Refresh via SPs only  
+- [ ] No SQL strings in `EmployeeListWindow.xaml.cs`  
+
 **Next**
 
-- [ ] P08 employee CRUD · P10 capstone  
+- [ ] P09 DataGrid binding · P10 capstone  
 
 ---
 
