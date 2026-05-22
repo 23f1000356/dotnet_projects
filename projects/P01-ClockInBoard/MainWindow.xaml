@@ -1,0 +1,60 @@
+<Window x:Class="PracticeFA.P01.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Practice FA — P01 · Employee clock-in board"
+        Height="520" Width="720"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" FontSize="22" FontWeight="SemiBold"
+                   Text="Employee clock-in board (P01)"/>
+        <TextBlock Grid.Row="1" Margin="0,4,0,16" Foreground="#555" TextWrapping="Wrap"
+                   Text="Sign in with a badge ID, then clock floor employees in. In-memory only — no SQL yet."/>
+
+        <Border Grid.Row="2" BorderBrush="#CCC" BorderThickness="1" CornerRadius="4" Padding="12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="280"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                    <TextBlock FontWeight="SemiBold" Text="Your login (fake session)"/>
+                    <TextBox x:Name="LoginBadgeBox" Margin="0,6,0,0" Padding="6"
+                             ToolTip="Try E001, E002, or any badge"/>
+                    <Button Margin="0,8,0,0" Padding="10,6" Content="Sign in"
+                            Click="SignIn_Click"/>
+
+                    <TextBlock x:Name="SessionText" Margin="0,12,0,0" Foreground="#0066AA"/>
+
+                    <Separator Margin="0,16"/>
+
+                    <TextBlock FontWeight="SemiBold" Text="Clock someone in"/>
+                    <TextBox x:Name="ClockInBadgeBox" Margin="0,6,0,0" Padding="6"
+                             IsEnabled="False"/>
+                    <Button x:Name="ClockInButton" Margin="0,8,0,0" Padding="10,6"
+                            Content="Clock in" IsEnabled="False"
+                            Click="ClockIn_Click"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock FontWeight="SemiBold" Text="On floor now"/>
+                    <ListBox x:Name="OnFloorList" Margin="0,8,0,0" Height="280"
+                             DisplayMemberPath="ListLabel"/>
+                    <TextBlock x:Name="FloorCountText" Margin="0,6,0,0" Foreground="#666"/>
+                    <Button Margin="0,8,0,0" Padding="8,4" Content="Clear list"
+                            Click="ClearList_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <TextBlock Grid.Row="3" Margin="0,12,0,0" FontSize="11" Foreground="#888"
+                   Text="Next: P02 — Frame + hub pages. C# track done: P00 → P29 → P30 → P31"/>
+    </Grid>
+</Window>

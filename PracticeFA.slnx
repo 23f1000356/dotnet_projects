@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="projects/P01-ClockInBoard/P01.App.csproj" />
+  <Project Path="projects/P00-ConsoleFloorTicket/P00.Console.csproj" />
+  <Project Path="projects/P29-LinqCollectionsLab/P29.Console.csproj" />
+  <Project Path="projects/P30-InterfacesRepository/P30.Console.csproj" />
+  <Project Path="projects/P31-ExceptionsLogging/P31.Console.csproj" />
+  <Project Path="src/PracticeFA.App/PracticeFA.App.csproj" />
+</Solution>

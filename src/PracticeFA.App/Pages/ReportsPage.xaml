@@ -1,0 +1,25 @@
+<Page x:Class="PracticeFA.App.Pages.ReportsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Reports">
+    <StackPanel Margin="24">
+        <TextBlock FontSize="24" FontWeight="SemiBold" Text="Reports"/>
+        <TextBlock Margin="0,8,0,20" Foreground="#555" TextWrapping="Wrap"
+                   Text="Floor MIS and analytics hub — read-only reports in FA. P13 will add date range + grid from SQL."/>
+
+        <Border BorderBrush="#CCC" BorderThickness="1" CornerRadius="4" Padding="16" Background="#FAFAFA">
+            <StackPanel>
+                <TextBlock FontWeight="SemiBold" Text="Sample report cards"/>
+                <Button Margin="0,12,0,0" HorizontalAlignment="Left" Padding="12,8"
+                        Content="Hourly productivity (P13)"
+                        Click="Placeholder_Click" Tag="Hourly productivity"/>
+                <Button Margin="0,8,0,0" HorizontalAlignment="Left" Padding="12,8"
+                        Content="Open order WIP summary"
+                        Click="Placeholder_Click" Tag="Open order WIP"/>
+                <Button Margin="0,8,0,0" HorizontalAlignment="Left" Padding="12,8"
+                        Content="Rejection report"
+                        Click="Placeholder_Click" Tag="Rejection report"/>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Page>

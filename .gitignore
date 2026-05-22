@@ -1,0 +1,24 @@
+# Build
+bin/
+obj/
+*.user
+*.suo
+*.cache
+
+# IDE
+.vs/
+.idea/
+
+# Logs / exports (P31 local runs)
+**/logs/
+**/export/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Secrets (never commit)
+*.pfx
+appsettings.*.local.json
+**/SAPSettings*.xml
+*.env
