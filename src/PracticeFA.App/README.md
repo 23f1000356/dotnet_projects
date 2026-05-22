@@ -1,6 +1,6 @@
-# P02 + P03 — Shell, pages, and shared theme
+# P02 + P03 + P04 — Shell, theme, and modal Views
 
-**Stack:** WPF · `Frame` · `Page` · Resource dictionaries  
+**Stack:** WPF · `Frame` · `Page` · Resource dictionaries · `ShowDialog`  
 **Prerequisite:** [P01 — Clock-in board](../../projects/P01-ClockInBoard/)  
 **Location:** `src/PracticeFA.App/`  
 **Current:** P04 complete · **Next:** P32 TwoWay binding or P06 SQL login
@@ -37,7 +37,7 @@ Window   →  Pop-up feature (P04) — Views/*
 │  │ Exit     │                          │ │
 │  └──────────┴──────────────────────────┘ │
 └─────────────────────────────────────────┘
-         P04 later: button → new Window (modal)
+         P04: hub button → Views/* Window (ShowDialog)
 ```
 
 ---
@@ -131,69 +131,11 @@ MainFrame.Navigate(new Uri("/Pages/MasterPage.xaml", UriKind.Relative));
 
 ---
 
-## `MasterPage` (P04 launcher)
+## `MasterPage`
 
-- Hub for **Master** module — buttons open **modal** `Views/*` windows
-- **FA pattern:** `Pages/MasterPage` → `new SomeView { Owner = main }.ShowDialog()`
-
-### P04 — Module launcher → feature windows
-
-**Goal:** Hub `Page` opens separate `Window` dialogs — the most common FA pattern after a menu click.
-
-```text
-MainWindow (shell, stays open)
-  Frame → MasterPage (hub)
-            button click
-              new StyleWindow { Owner = mainWindow }
-              ShowDialog()  ← blocks hub until closed
-```
-
-| Button | Module id | Window |
-|--------|-----------|--------|
-| Style Creation | 1001 | `Views/StyleWindow` |
-| Bagging Entry | 2001 | `Views/BaggingWindow` |
-| MIS Productivity | 3001 | `Views/MisWindow` |
-
-### Open dialog (code)
-
-```csharp
-var owner = Window.GetWindow(this);
-var dialog = new StyleWindow(ModuleIds.StyleCreation) { Owner = owner };
-var saved = dialog.ShowDialog() == true;
-```
-
-| API | Meaning |
-|-----|---------|
-| `Window.GetWindow(this)` | Main shell from a `Page` |
-| `Owner = owner` | Center dialog on main window |
-| `ShowDialog()` | **Modal** — hub frozen until close |
-| `DialogResult = true/false` | Save vs Cancel |
-| `WindowStartupLocation="CenterOwner"` | In each View XAML |
-
-Each View has: title + module id in header, `TextBox`, **Save** (`DialogResult=true`), **Cancel** (`false`).
-
-### Page vs Window (P02 + P04)
-
-| | `Page` in `Frame` | `Window` in `Views/` |
-|--|-------------------|----------------------|
-| Stays in shell | Yes | No — pop-up |
-| Navigation | `Frame.Navigate` | `ShowDialog()` |
-| P04 example | MasterPage | StyleWindow, BaggingWindow, MisWindow |
-| FA | `Pages/BaggingPage` | `Views/BaggingEntryView.xaml` |
-
-**Web analogy:** hub page = layout route; modal = `dialog.open()` blocking interaction behind it.
-
-### P04 acceptance
-
-- [ ] Three buttons open three different windows
-- [ ] Dialog blocks Master until closed
-- [ ] `Owner` set — dialog centers on main window
-- [ ] Cancel sets `DialogResult = false` (see `LastDialogText` on Master)
-
-### FA homework
-
-- [ ] Grep FA `ShowDialog` from one `Pages/*.xaml.cs`
-- [ ] Trace: button → `new *View` → `ShowDialog`
+- Hub for **Master** module (style, bagging shortcuts, …)
+- **P04:** three buttons open modal `Views/*` windows via `OpenFeature()`
+- **FA:** `Pages/MasterPage` → `new StyleCreationView { Owner = main }.ShowDialog()`
 
 ---
 
@@ -373,15 +315,256 @@ Columns define **Header** and **Binding** only — no per-column `Background="#.
 
 ---
 
+## P04 — Module launcher → feature windows (detailed)
+
+**P02** = *where* hubs live (`Frame` + `Page`).  
+**P03** = *how* they look (`Theme.xaml`).  
+**P04** = hub **Page** opens separate **Windows** as **modal dialogs** — the most common Floor Assistant pattern after a menu click.
+
+### The problem P04 solves
+
+Real FA flow:
+
+1. Main app stays open (left menu).
+2. User opens **Master** or **Bagging** hub (`Page` in `Frame`).
+3. User clicks **Style Creation** or **Bagging Entry**.
+4. A **new window** opens on top for data entry.
+5. User **Save** or **Cancel** — window closes; hub works again.
+
+P04 teaches that layer: not `Frame.Navigate`, but `new SomeWindow().ShowDialog()`.
+
+### Three UI levels (full picture)
+
+```text
+Window  →  MainWindow              ← shell, always open (P02)
+  Frame →  MasterPage / ReportsPage     ← hubs inside shell (P02)
+Window  →  StyleWindow, BaggingWindow, MisWindow   ← features (P04)
+```
+
+```text
+┌─────────────────────────────────────────────────────┐
+│ MainWindow (Owner)                                  │
+│  ┌─────────┬──────────────────────────────────────┐ │
+│  │ Master  │  MasterPage (hub)                    │ │
+│  │ Reports │    [Style Creation] [Bagging] …    │ │
+│  └─────────┴──────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────┘
+              click Style Creation
+                    ↓
+        ┌──────────────────────────┐
+        │ StyleWindow (modal)        │  ← blocks hub until closed
+        │  TextBox + Save / Cancel   │
+        └──────────────────────────┘
+```
+
+| Level | Type | Stays in shell? | How you open it |
+|-------|------|-----------------|-----------------|
+| Shell | `MainWindow` | Yes | App startup |
+| Hub | `Page` in `Frame` | Yes | `MainFrame.Navigate(new MasterPage())` |
+| Feature | `Window` in `Views/` | No — pop-up | `ShowDialog()` |
+
+### Web → WPF mapping
+
+| Web / React | P04 (WPF) |
+|-------------|-----------|
+| App layout + sidebar | `MainWindow` |
+| Route `/master` | `MasterPage` in `Frame` |
+| `dialog.showModal()` | `ShowDialog()` |
+| Modal `onClose(result)` | `DialogResult` true / false |
+| Center on parent | `Owner = mainWindow` |
+
+### Folder roles
+
+| Path | Role |
+|------|------|
+| `Pages/MasterPage` | Launcher — buttons only |
+| `Views/StyleWindow` | Feature screen (module 1001) |
+| `Views/BaggingWindow` | Feature screen (module 2001) |
+| `Views/MisWindow` | Feature screen (module 3001) |
+| `Models/ModuleIds.cs` | Fake FA module numbers |
+
+**FA naming:** `Pages/*` = hubs · `Views/*` = work screens (CRUD, scan, reports).
+
+### Module IDs (`Models/ModuleIds.cs`)
+
+```csharp
+public const int StyleCreation = 1001;
+public const int BaggingEntry = 2001;
+public const int MisProductivity = 3001;
+```
+
+Passed into window constructors: `new StyleWindow(ModuleIds.StyleCreation)`.  
+Real FA uses module ids for permissions, logging, and which View to open.
+
+| Button | Module id | Window |
+|--------|-----------|--------|
+| Style Creation | 1001 | `Views/StyleWindow` |
+| Bagging Entry | 2001 | `Views/BaggingWindow` |
+| MIS Productivity | 3001 | `Views/MisWindow` |
+
+### Step 1 — Hub buttons (`MasterPage.xaml`)
+
+Hub has three buttons; each has its own `Click` handler.  
+The hub does **not** contain the form — it only **launches** the right `Window`.
+
+### Step 2 — Open dialog (`MasterPage.xaml.cs`)
+
+```csharp
+private void StyleCreation_Click(object sender, RoutedEventArgs e) =>
+    OpenFeature(new StyleWindow(ModuleIds.StyleCreation));
+
+private void OpenFeature(Window featureWindow)
+{
+    var owner = Window.GetWindow(this);
+    if (owner is not null)
+        featureWindow.Owner = owner;
+
+    var saved = featureWindow.ShowDialog() == true;
+    LastDialogText.Text = saved
+        ? $"Last dialog: {featureWindow.Title} — Saved (DialogResult=true)"
+        : $"Last dialog: {featureWindow.Title} — Cancelled (DialogResult=false)";
+}
+```
+
+| Line | Meaning |
+|------|---------|
+| `new StyleWindow(...)` | Create feature window (not shown yet) |
+| `Window.GetWindow(this)` | From a `Page`, find parent `MainWindow` |
+| `Owner = owner` | Center dialog on shell |
+| `ShowDialog()` | **Modal** — code waits until window closes |
+| `== true` | User clicked Save |
+| `LastDialogText` | Shows Save vs Cancel after close |
+
+**Why `GetWindow(this)?** `MasterPage` is a `Page` inside `Frame`, not a `Window`. `GetWindow` walks up to `MainWindow` for `Owner`.
+
+### `ShowDialog()` vs `Show()`
+
+| | `Show()` | `ShowDialog()` |
+|--|----------|----------------|
+| Modal? | No — hub still clickable | **Yes** — hub blocked |
+| Code continues | Immediately | After window closes |
+| Return value | None | `bool?` (`DialogResult`) |
+| FA | Rare for edits | **Very common** for Save/Cancel |
+
+### Step 3 — Feature window (`Views/StyleWindow`)
+
+**XAML** — root is `<Window>`, not `<Page>`:
+
+```xml
+<Window WindowStartupLocation="CenterOwner" ResizeMode="NoResize" ...>
+```
+
+- `CenterOwner` — center on `Owner` (`MainWindow`)
+- `ResizeMode="NoResize"` — fixed dialog size
+
+**Code-behind** — Save / Cancel:
+
+```csharp
+private void Save_Click(object sender, RoutedEventArgs e)
+{
+    DialogResult = true;
+    Close();
+}
+
+private void Cancel_Click(object sender, RoutedEventArgs e)
+{
+    DialogResult = false;
+    Close();
+}
+```
+
+| Button | `DialogResult` | Hub sees |
+|--------|----------------|----------|
+| Save | `true` | `ShowDialog() == true` |
+| Cancel | `false` | Cancelled |
+
+Set `DialogResult` **before** `Close()`. Later P08+ will call SQL on Save.
+
+`BaggingWindow` and `MisWindow` follow the same pattern with different labels.
+
+### End-to-end flow (one click)
+
+```text
+1. MainWindow → Frame shows MasterPage
+2. User clicks "Style Creation (1001)"
+3. new StyleWindow(1001), Owner = MainWindow
+4. ShowDialog() — hub frozen
+5. User clicks Save → DialogResult = true, Close()
+6. ShowDialog() returns true → LastDialogText updated
+7. User can open Bagging or MIS next
+```
+
+### P02 + P03 + P04 together
+
+| Project | You learn |
+|---------|-----------|
+| P02 | `MainWindow` + `Frame.Navigate(MasterPage)` |
+| P03 | `Theme.xaml` on all buttons/grids |
+| P04 | `Views/*` + `ShowDialog()` from hub |
+
+`MainWindow.xaml.cs` stays thin — only `Navigate` to Master/Reports. P04 logic is in **MasterPage** + **Views** only.
+
+### Page vs Window
+
+| | `Page` in `Frame` | `Window` in `Views/` |
+|--|-------------------|----------------------|
+| Stays in shell | Yes | No — pop-up |
+| Open with | `Frame.Navigate` | `ShowDialog()` |
+| P04 example | MasterPage | StyleWindow, BaggingWindow, MisWindow |
+| FA | `Pages/BaggingPage` | `Views/BaggingEntryView.xaml` |
+
+### Floor Assistant mapping
+
+| P04 | Floor Assistant |
+|-----|-----------------|
+| `Pages/MasterPage` | Module hub pages |
+| `Views/StyleWindow` | `Views/*.xaml` feature screens |
+| `ShowDialog()` | Modal edits, confirmations |
+| `Owner = main` | Dialog centered on shell |
+| `ModuleIds` | Real menu/security module ids |
+| Save → `DialogResult = true` | Then `ExecSP`, refresh grid |
+
+**FA homework:** grep `ShowDialog` in one `Pages/*.xaml.cs` · trace button → `new *View` → Save.
+
+### P04 experiments
+
+1. Breakpoint on `ShowDialog()` — step Save vs Cancel return values.
+2. Remove `Owner` — see dialog position; restore `Owner`.
+3. Replace `ShowDialog()` with `Show()` — hub stays clickable; compare.
+4. Add a fourth `Views/*` window from a new Master button.
+
+### What P04 does not cover
+
+- SQL / `ExecSP` on Save (P08+)
+- MVVM (P05, P32)
+- Validation (P33)
+- Passing selected grid row into dialog (common FA pattern — later)
+- Non-modal `Show()` windows
+
+### Quick reference
+
+```csharp
+var owner = Window.GetWindow(this);
+var dlg = new StyleWindow(ModuleIds.StyleCreation) { Owner = owner };
+if (dlg.ShowDialog() == true)
+{
+    // user saved — later: read fields, call service, refresh grid
+}
+```
+
+**Memorize:** Hub = `Page` + buttons · Feature = `Window` in `Views/` · Connect with `ShowDialog()` + `Owner` + `DialogResult`.
+
+---
+
 ## User journey
 
 1. App opens → **Master** in Frame  
 2. Click **Reports** (left) → content swaps; same window  
 3. Click **Master** → back  
-4. Hub button → placeholder MessageBox  
+4. Hub button (e.g. Style Creation) → **modal** `Views/*` window; hub blocked until Save/Cancel  
 5. **Exit** → app closes  
 
-Reports does **not** open a second application window.
+Reports does **not** open a second application window. P04 feature windows are **dialogs on top** of the shell, not a second app.
 
 ---
 
@@ -449,9 +632,19 @@ Visual Studio: startup **PracticeFA.App** → **F5**.
 
 ## Experiments
 
-1. Add **Bagging** menu button + empty `BaggingPage`.  
+**P02**
+
+1. Add **Bagging** menu button + empty `BaggingPage` in `Frame`.  
 2. Breakpoint on `NavigateToReports()`.  
-3. Find FA `MainWindowNew` + one `Pages` file side by side.
+
+**P04**
+
+3. Breakpoint on `ShowDialog()` in `OpenFeature`.  
+4. Try `Show()` instead of `ShowDialog()` — feel non-modal behavior.  
+
+**FA**
+
+5. Find `MainWindowNew` + one `Pages` file + one `Views` file side by side.
 
 ---
 
