@@ -4,7 +4,8 @@
 **Prerequisite:** [P01 — Clock-in board](../../projects/P01-ClockInBoard/) · [P32](../projects/P32-TwoWayBindingLab/) · [P33](../projects/P33-ValidationLab/) (separate labs)  
 **Location:** `src/PracticeFA.App/`  
 **Current:** P06 + P34 complete · **Next:** P07 role menu · P10 capstone  
-**P06 SQL setup:** [database/README.md](../../database/README.md)
+**P06 SQL setup:** [database/README.md](../../database/README.md)  
+**P34 full guide:** [P34-README.md](P34-README.md)
 
 ---
 
@@ -563,6 +564,8 @@ if (dlg.ShowDialog() == true)
 ---
 
 ## P34 — UserControl + Menu + ToolBar (detailed)
+
+**Full standalone guide:** [P34-README.md](P34-README.md)
 
 **P34 completes the WPF pillar checkpoint** — you can explain **Frame vs Window vs UserControl** and how FA reuses UI chunks across screens.
 
