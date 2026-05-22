@@ -1060,7 +1060,7 @@ Menu visibility from **database**, not `if (username == "admin")`.
 
 ---
 
-## P08 — Employee CRUD via stored procedures 🔲
+## P08 — Employee CRUD via stored procedures ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1954,7 +1954,7 @@ Copy to `docs/my-progress.md` and tick dates.
 | P06 | SQL login | ✅ | `database/scripts/001_PracticeFA.sql` · `SignInWindow` | |
 | P24 | Connection config | | | |
 | P07 | Role menu | ✅ | `ModuleAuth` · `MasterPage` visibility | |
-| P08 | Employee CRUD | | | |
+| P08 | Employee CRUD | ✅ | `Views/EmployeeListWindow` · `002_P08_Employees.sql` | |
 | P09 | DataGrid binding | | | |
 | P35 | Search SP | | | |
 | P36 | Transaction save | | | |

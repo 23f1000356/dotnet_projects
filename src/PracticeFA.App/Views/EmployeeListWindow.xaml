@@ -1,0 +1,35 @@
+<Window x:Class="PracticeFA.App.Views.EmployeeListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Employee maintenance (P08)"
+        Height="520" Width="780"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Style="{StaticResource PageTitleStyle}" Text="Employees"/>
+        <TextBlock Grid.Row="1" Margin="0,8,0,12" Style="{StaticResource SubtitleStyle}"
+                   Text="CRUD via dbo.spGetEmployees / spInsEmployee / spUpdEmployee / spDelEmployee — grid uses DataTable.DefaultView (P09 preview)."/>
+
+        <DataGrid x:Name="EmployeeGrid" Grid.Row="2" MinHeight="280"
+                  SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True"
+                  AutoGenerateColumns="True"/>
+
+        <StackPanel Grid.Row="3" Margin="0,12,0,0">
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="0,0,8,0" Content="Refresh" Click="Refresh_Click"/>
+                <Button Margin="0,0,8,0" Content="Add" Click="Add_Click"/>
+                <Button Margin="0,0,8,0" Content="Edit" Click="Edit_Click"/>
+                <Button Margin="0,0,8,0" Content="Delete" Click="Delete_Click"/>
+                <Button Content="Close" Click="Close_Click"/>
+            </StackPanel>
+            <TextBlock x:Name="StatusText" Margin="0,10,0,0"
+                       Foreground="{StaticResource MutedTextBrush}" TextWrapping="Wrap"/>
+        </StackPanel>
+    </Grid>
+</Window>

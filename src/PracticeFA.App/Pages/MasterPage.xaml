@@ -7,7 +7,7 @@
         <StackPanel Margin="24">
             <TextBlock Style="{StaticResource PageTitleStyle}" Text="Master"/>
             <TextBlock Margin="0,8,0,12" Style="{StaticResource SubtitleStyle}"
-                       Text="P07 — launcher buttons hidden by spGetUserModules (no username checks)."/>
+                       Text="P07 modules · P08 Employee CRUD (stored procedures only)."/>
 
             <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12">
                 <StackPanel>
@@ -36,6 +36,8 @@
                         Content="Bagging Entry (2001)" Click="BaggingEntry_Click"/>
                 <Button x:Name="MisProductivityButton" Tag="3001"
                         Content="MIS Productivity (3001)" Click="MisProductivity_Click"/>
+                <Button x:Name="EmployeeMaintenanceButton" Tag="6001"
+                        Content="Employee maintenance (6001)" Click="EmployeeMaintenance_Click"/>
             </WrapPanel>
 
             <TextBlock x:Name="LastDialogText" Margin="0,20,0,0"

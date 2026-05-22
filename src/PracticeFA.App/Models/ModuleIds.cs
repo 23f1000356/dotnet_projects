@@ -6,4 +6,5 @@ public static class ModuleIds
     public const int StyleCreation = 1001;
     public const int BaggingEntry = 2001;
     public const int MisProductivity = 3001;
+    public const int EmployeeMaintenance = 6001;
 }

@@ -23,6 +23,7 @@ public partial class MasterPage : Page
         SetModuleButton(StyleCreationButton, ModuleIds.StyleCreation);
         SetModuleButton(BaggingEntryButton, ModuleIds.BaggingEntry);
         SetModuleButton(MisProductivityButton, ModuleIds.MisProductivity);
+        SetModuleButton(EmployeeMaintenanceButton, ModuleIds.EmployeeMaintenance);
     }
 
     private static void SetModuleButton(Button button, int moduleId) =>
@@ -32,45 +33,62 @@ public partial class MasterPage : Page
 
     private void EmployeeSearch_SearchRequested(object sender, RoutedEventArgs e)
     {
-        if (DataContext is SearchHostContext ctx)
+        if (DataContext is not SearchHostContext ctx)
+            return;
+
+        if (string.IsNullOrWhiteSpace(ctx.SearchBadge))
         {
-            SearchResultText.Text = string.IsNullOrWhiteSpace(ctx.SearchBadge)
-                ? $"[{ctx.HostName}] Search: enter a badge."
-                : $"[{ctx.HostName}] Search badge {ctx.SearchBadge} — P08 will call spGetEmployeeByBadge.";
+            SearchResultText.Text = $"[{ctx.HostName}] Search: enter a badge.";
+            return;
         }
+
+        var employee = EmployeeService.GetByBadge(ctx.SearchBadge);
+        SearchResultText.Text = employee is null
+            ? $"[{ctx.HostName}] No employee for badge {ctx.SearchBadge}."
+            : $"[{ctx.HostName}] Found {employee.DisplayName} · {employee.ProcessCenter ?? "—"} · Active={employee.IsActive}";
     }
 
     private void StyleCreation_Click(object sender, RoutedEventArgs e)
     {
-        if (!TryOpenModule(ModuleIds.StyleCreation, out var denied))
+        if (!TryOpenModule(ModuleIds.StyleCreation))
             return;
         OpenFeature(new StyleWindow(ModuleIds.StyleCreation));
     }
 
     private void BaggingEntry_Click(object sender, RoutedEventArgs e)
     {
-        if (!TryOpenModule(ModuleIds.BaggingEntry, out var denied))
+        if (!TryOpenModule(ModuleIds.BaggingEntry))
             return;
         OpenFeature(new BaggingWindow(ModuleIds.BaggingEntry));
     }
 
     private void MisProductivity_Click(object sender, RoutedEventArgs e)
     {
-        if (!TryOpenModule(ModuleIds.MisProductivity, out var denied))
+        if (!TryOpenModule(ModuleIds.MisProductivity))
             return;
         OpenFeature(new MisWindow(ModuleIds.MisProductivity));
     }
 
-    private bool TryOpenModule(int moduleId, out string? deniedMessage)
+    private void EmployeeMaintenance_Click(object sender, RoutedEventArgs e)
+    {
+        if (!TryOpenModule(ModuleIds.EmployeeMaintenance))
+            return;
+
+        var owner = Window.GetWindow(this);
+        var list = new EmployeeListWindow();
+        if (owner is not null)
+            list.Owner = owner;
+
+        list.ShowDialog();
+        LastDialogText.Text = "Employee maintenance closed — grid saved via stored procedures.";
+    }
+
+    private bool TryOpenModule(int moduleId)
     {
         if (ModuleAuth.CanAccess(moduleId))
-        {
-            deniedMessage = null;
             return true;
-        }
 
-        deniedMessage = $"Module {moduleId} is not in your access list.";
-        LastDialogText.Text = deniedMessage;
+        LastDialogText.Text = $"Module {moduleId} is not in your access list.";
         return false;
     }
 
@@ -86,3 +104,4 @@ public partial class MasterPage : Page
             : $"Last dialog: {featureWindow.Title} — Cancelled (DialogResult=false)";
     }
 }
+

@@ -3,9 +3,10 @@
 **Stack:** WPF · `Frame` · `Page` · `UserControl` · Theme · `ShowDialog` · Menu · ToolBar  
 **Prerequisite:** [P01 — Clock-in board](../../projects/P01-ClockInBoard/) · [P32](../projects/P32-TwoWayBindingLab/) · [P33](../projects/P33-ValidationLab/) (separate labs)  
 **Location:** `src/PracticeFA.App/`  
-**Current:** P06 · P07 · P34 complete · **Next:** P08 CRUD · P10 capstone  
+**Current:** P06 · P07 · P08 · P34 complete · **Next:** P09 DataGrid · P10 capstone  
 **P06 SQL setup:** [database/README.md](../../database/README.md)  
 **P07 role menu:** [database/P07-README.md](../../database/P07-README.md)  
+**P08 employee CRUD:** [database/P08-README.md](../../database/P08-README.md)  
 **P34 full guide:** [P34-README.md](P34-README.md)
 
 ---
