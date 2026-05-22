@@ -3,7 +3,7 @@
 **Stack:** WPF · `Frame` · `Page` · Resource dictionaries  
 **Prerequisite:** [P01 — Clock-in board](../../projects/P01-ClockInBoard/)  
 **Location:** `src/PracticeFA.App/`  
-**Current:** P03 complete · **Next:** P04 feature windows
+**Current:** P04 complete · **Next:** P32 TwoWay binding or P06 SQL login
 
 ---
 
@@ -60,9 +60,15 @@ src/PracticeFA.App/
   Assets/Theme.xaml        → P03 colors + Button + DataGrid styles
   MainWindow.xaml          → shell: menu + Frame
   MainWindow.xaml.cs       → navigation only
-  Models/WipSummaryRow.cs  → sample grid rows (Reports)
+  Models/
+    WipSummaryRow.cs       → sample grid rows (Reports)
+    ModuleIds.cs           → fake module ids (1001, 2001, 3001)
+  Views/
+    StyleWindow.xaml(.cs)  → module 1001 modal
+    BaggingWindow.xaml(.cs)→ module 2001 modal
+    MisWindow.xaml(.cs)    → module 3001 modal
   Pages/
-    MasterPage.xaml(.cs)   → product master hub
+    MasterPage.xaml(.cs)   → hub → ShowDialog Views
     ReportsPage.xaml(.cs)  → MIS hub + DataGrid
 ```
 
@@ -125,11 +131,69 @@ MainFrame.Navigate(new Uri("/Pages/MasterPage.xaml", UriKind.Relative));
 
 ---
 
-## `MasterPage`
+## `MasterPage` (P04 launcher)
 
-- Hub for **Master** module (style, SKU, customer, …)
-- Buttons use `Tag` + `Placeholder_Click` → MessageBox (“P04 will open View…”)
-- **FA:** `Pages/MasterPage` → `new StyleCreationView().ShowDialog()`
+- Hub for **Master** module — buttons open **modal** `Views/*` windows
+- **FA pattern:** `Pages/MasterPage` → `new SomeView { Owner = main }.ShowDialog()`
+
+### P04 — Module launcher → feature windows
+
+**Goal:** Hub `Page` opens separate `Window` dialogs — the most common FA pattern after a menu click.
+
+```text
+MainWindow (shell, stays open)
+  Frame → MasterPage (hub)
+            button click
+              new StyleWindow { Owner = mainWindow }
+              ShowDialog()  ← blocks hub until closed
+```
+
+| Button | Module id | Window |
+|--------|-----------|--------|
+| Style Creation | 1001 | `Views/StyleWindow` |
+| Bagging Entry | 2001 | `Views/BaggingWindow` |
+| MIS Productivity | 3001 | `Views/MisWindow` |
+
+### Open dialog (code)
+
+```csharp
+var owner = Window.GetWindow(this);
+var dialog = new StyleWindow(ModuleIds.StyleCreation) { Owner = owner };
+var saved = dialog.ShowDialog() == true;
+```
+
+| API | Meaning |
+|-----|---------|
+| `Window.GetWindow(this)` | Main shell from a `Page` |
+| `Owner = owner` | Center dialog on main window |
+| `ShowDialog()` | **Modal** — hub frozen until close |
+| `DialogResult = true/false` | Save vs Cancel |
+| `WindowStartupLocation="CenterOwner"` | In each View XAML |
+
+Each View has: title + module id in header, `TextBox`, **Save** (`DialogResult=true`), **Cancel** (`false`).
+
+### Page vs Window (P02 + P04)
+
+| | `Page` in `Frame` | `Window` in `Views/` |
+|--|-------------------|----------------------|
+| Stays in shell | Yes | No — pop-up |
+| Navigation | `Frame.Navigate` | `ShowDialog()` |
+| P04 example | MasterPage | StyleWindow, BaggingWindow, MisWindow |
+| FA | `Pages/BaggingPage` | `Views/BaggingEntryView.xaml` |
+
+**Web analogy:** hub page = layout route; modal = `dialog.open()` blocking interaction behind it.
+
+### P04 acceptance
+
+- [ ] Three buttons open three different windows
+- [ ] Dialog blocks Master until closed
+- [ ] `Owner` set — dialog centers on main window
+- [ ] Cancel sets `DialogResult = false` (see `LastDialogText` on Master)
+
+### FA homework
+
+- [ ] Grep FA `ShowDialog` from one `Pages/*.xaml.cs`
+- [ ] Trace: button → `new *View` → `ShowDialog`
 
 ---
 
@@ -371,9 +435,15 @@ Visual Studio: startup **PracticeFA.App** → **F5**.
 - [ ] DataGrid on Reports has styled headers without per-column XAML  
 - [ ] No duplicate `Background="#..."` on every button  
 
+**P04**
+
+- [ ] Three modules open three different windows  
+- [ ] `ShowDialog` blocks hub; `Owner` set  
+- [ ] Save/Cancel set `DialogResult`  
+
 **Next**
 
-- [ ] P04 adds `Views/*` windows from hub buttons  
+- [ ] P32 binding lab or P06 SQL login  
 
 ---
 
@@ -388,5 +458,5 @@ Visual Studio: startup **PracticeFA.App** → **F5**.
 ## Learning path
 
 ```text
-P01 (one window) → P02 (shell + pages) → P03 (theme) → P04 (Views) → P06 (SQL login) → P10 (full mini FA)
+P01 → P02 (shell) → P03 (theme) → P04 (Views/ShowDialog) → P32/P06 → P10 (mini FA)
 ```

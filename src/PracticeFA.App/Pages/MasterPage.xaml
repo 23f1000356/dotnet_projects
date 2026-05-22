@@ -1,24 +1,31 @@
-<Page x:Class="PracticeFA.App.Pages.MasterPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Title="Master">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleStyle}" Text="Master"/>
-            <TextBlock Margin="0,8,0,20" Style="{StaticResource SubtitleStyle}"
-                       Text="Product master data hub — buttons use implicit Style from Assets/Theme.xaml (P04 opens Views/*)."/>
-
-            <TextBlock FontWeight="SemiBold" Foreground="{StaticResource PrimaryBrush}"
-                       Text="Module shortcuts (placeholders)"/>
-            <WrapPanel Margin="0,12,0,0">
-                <Button Content="Style Creation" Click="Placeholder_Click" Tag="Style Creation"/>
-                <Button Content="SKU Creation" Click="Placeholder_Click" Tag="SKU Creation"/>
-                <Button Content="Customer Master" Click="Placeholder_Click" Tag="Customer Master"/>
-                <Button Content="Employee Mapping" Click="Placeholder_Click" Tag="Employee Mapping"/>
-            </WrapPanel>
-
-            <TextBlock Margin="0,24,0,0" FontSize="12" Foreground="{StaticResource MutedTextBrush}"
-                       Text="P01 clock-in lives in projects/P01-ClockInBoard. P04 will open real feature windows from here."/>
-        </StackPanel>
-    </ScrollViewer>
-</Page>
+<Page x:Class="PracticeFA.App.Pages.MasterPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Master">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleStyle}" Text="Master"/>
+            <TextBlock Margin="0,8,0,20" Style="{StaticResource SubtitleStyle}"
+                       Text="P04 — hub opens modal Views/* windows (ShowDialog). Shell stays open behind the dialog."/>
+
+            <TextBlock FontWeight="SemiBold" Foreground="{StaticResource PrimaryBrush}"
+                       Text="Module launcher (P04)"/>
+            <WrapPanel Margin="0,12,0,0">
+                <Button Content="Style Creation (1001)"
+                        Click="StyleCreation_Click"/>
+                <Button Content="Bagging Entry (2001)"
+                        Click="BaggingEntry_Click"/>
+                <Button Content="MIS Productivity (3001)"
+                        Click="MisProductivity_Click"/>
+            </WrapPanel>
+
+            <TextBlock x:Name="LastDialogText" Margin="0,20,0,0"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       TextWrapping="Wrap"
+                       Text="Last dialog: (none)"/>
+
+            <TextBlock Margin="0,24,0,0" FontSize="12" Foreground="{StaticResource MutedTextBrush}"
+                       Text="P01 clock-in: projects/P01-ClockInBoard. More master modules (SKU, Customer) can be added in P04 style."/>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

@@ -793,7 +793,7 @@ Centralize look-and-feel like FA resource dictionaries (buttons, colors, DataGri
 
 ---
 
-## P04 — Module launcher → feature windows 🔲
+## P04 — Module launcher → feature windows ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1948,7 +1948,7 @@ Copy to `docs/my-progress.md` and tick dates.
 | P02 | Frame + hubs | | | |
 | P32 | TwoWay binding | | | |
 | P03 | Theme dictionary | ✅ | `src/PracticeFA.App/Assets/Theme.xaml` | |
-| P04 | Module launcher | | | |
+| P04 | Module launcher | ✅ | `src/PracticeFA.App/Views/*` | |
 | P33 | Validation | | | |
 | P34 | UserControl + menu | | | |
 | P06 | SQL login | | | |
