@@ -939,7 +939,7 @@ Extract reusable UI (**UserControl**) and add **Menu** / **ToolBar** like FA she
 
 # Pillar 3 — SQL + ADO.NET
 
-## P06 — Real login + UserInfo 🔲
+## P06 — Real login + UserInfo ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1951,7 +1951,7 @@ Copy to `docs/my-progress.md` and tick dates.
 | P04 | Module launcher | ✅ | `src/PracticeFA.App/Views/*` | |
 | P33 | Validation | ✅ | `projects/P33-ValidationLab/` | |
 | P34 | UserControl + menu | ✅ | `src/PracticeFA.App/Controls/` | |
-| P06 | SQL login | | | |
+| P06 | SQL login | ✅ | `database/scripts/001_PracticeFA.sql` · `SignInWindow` | |
 | P24 | Connection config | | | |
 | P07 | Role menu | | | |
 | P08 | Employee CRUD | | | |

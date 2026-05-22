@@ -3,7 +3,8 @@
 **Stack:** WPF · `Frame` · `Page` · `UserControl` · Theme · `ShowDialog` · Menu · ToolBar  
 **Prerequisite:** [P01 — Clock-in board](../../projects/P01-ClockInBoard/) · [P32](../projects/P32-TwoWayBindingLab/) · [P33](../projects/P33-ValidationLab/) (separate labs)  
 **Location:** `src/PracticeFA.App/`  
-**Current:** P34 complete · **Next:** P06 SQL login · P10 capstone
+**Current:** P06 + P34 complete · **Next:** P07 role menu · P10 capstone  
+**P06 SQL setup:** [database/README.md](../../database/README.md)
 
 ---
 
@@ -62,8 +63,14 @@ src/PracticeFA.App/
   MainWindow.xaml(.cs)         → P02 shell + P34 Menu + ToolBar
   Controls/
     EmployeeSearchBox.xaml(.cs) → P34 reusable badge search
+  App.config                 → P06 connection string
+  Services/
+    DataAccess.cs, LoginService.cs, AppState.cs
   Models/
+    UserInfo.cs, UserInfoMapper.cs
     WipSummaryRow.cs, ModuleIds.cs, SearchHostContext.cs
+  Views/
+    SignInWindow.xaml(.cs)   → P06 login (app entry)
   Pages/
     MasterPage.xaml(.cs)        → hub + EmployeeSearchBox + P04 Views
     ReportsPage.xaml(.cs)
@@ -737,9 +744,35 @@ DataContext = new SearchHostContext("E101", "Master hub");
 
 ---
 
+## P06 — Real login + UserInfo (detailed)
+
+**Full guide:** [database/README.md](../../database/README.md) (SSMS, sqlcmd, troubleshooting).
+
+**Summary:** App starts at `SignInWindow` → `LoginService.TryLogin` → `DataAccess.ExecSp("dbo.spLogin")` → `UserInfoMapper.FromRow` → `AppState.CurrentUser` → `MainWindow`.
+
+| Test user | Password |
+|-----------|----------|
+| operator1 | pass1 |
+| manager1 | pass1 |
+| operator2 | pass2 |
+
+```powershell
+# One-time DB setup
+sqlcmd -S "(localdb)\MSSQLLocalDB" -E -i database\scripts\001_PracticeFA.sql
+
+dotnet run --project src/PracticeFA.App/PracticeFA.App.csproj
+```
+
+**Rules:** No SQL in `SignInWindow.xaml.cs` · Bad password = friendly `ErrorText` · Session until Exit.
+
+**Next:** P07 calls `spGetUserModules` to show/hide Master hub buttons by user.
+
+---
+
 ## User journey
 
-1. App opens → **Master** in Frame  
+1. **Sign-in** (P06) → valid user opens shell  
+2. App shows **Master** in Frame  
 2. Click **Reports** (left) → content swaps; same window  
 3. Click **Master** → back  
 4. Hub button (e.g. Style Creation) → **modal** `Views/*` window; hub blocked until Save/Cancel  
@@ -811,9 +844,16 @@ Visual Studio: startup **PracticeFA.App** → **F5**.
 - [ ] Menu navigates like sidebar  
 - [ ] Explain Frame / Window / UserControl  
 
+**P06**
+
+- [ ] `001_PracticeFA.sql` run in SSMS  
+- [ ] `operator1` / `pass1` opens main shell  
+- [ ] Bad password shows friendly message  
+- [ ] `SignInWindow.xaml.cs` has no SQL strings  
+
 **Next**
 
-- [ ] P06 SQL login · P10 capstone  
+- [ ] P07 role menu · P10 capstone  
 
 ---
 
