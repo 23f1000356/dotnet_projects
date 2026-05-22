@@ -1019,7 +1019,7 @@ Seed: 2 users, 5 modules, different `UserAccess` rows.
 
 ---
 
-## P07 — Role-based menu 🔲
+## P07 — Role-based menu ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1953,7 +1953,7 @@ Copy to `docs/my-progress.md` and tick dates.
 | P34 | UserControl + menu | ✅ | `src/PracticeFA.App/Controls/` | |
 | P06 | SQL login | ✅ | `database/scripts/001_PracticeFA.sql` · `SignInWindow` | |
 | P24 | Connection config | | | |
-| P07 | Role menu | | | |
+| P07 | Role menu | ✅ | `ModuleAuth` · `MasterPage` visibility | |
 | P08 | Employee CRUD | | | |
 | P09 | DataGrid binding | | | |
 | P35 | Search SP | | | |

@@ -7,7 +7,17 @@
         <StackPanel Margin="24">
             <TextBlock Style="{StaticResource PageTitleStyle}" Text="Master"/>
             <TextBlock Margin="0,8,0,12" Style="{StaticResource SubtitleStyle}"
-                       Text="P34 — reusable EmployeeSearchBox UserControl (DataContext = Master host)."/>
+                       Text="P07 — launcher buttons hidden by spGetUserModules (no username checks)."/>
+
+            <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock FontWeight="SemiBold" Foreground="{StaticResource PrimaryBrush}"
+                               Text="Your modules (from database)"/>
+                    <TextBlock x:Name="ModulesListText" Margin="0,8,0,0"
+                               Foreground="{StaticResource MutedTextBrush}" TextWrapping="Wrap"
+                               Text="Your modules: (not loaded)"/>
+                </StackPanel>
+            </Border>
 
             <controls:EmployeeSearchBox
                 BadgeText="{Binding SearchBadge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -18,11 +28,14 @@
                        Text="Search: (none)"/>
 
             <TextBlock FontWeight="SemiBold" Foreground="{StaticResource PrimaryBrush}"
-                       Text="Module launcher (P04)"/>
+                       Text="Module launcher (P04 + P07)"/>
             <WrapPanel Margin="0,12,0,0">
-                <Button Content="Style Creation (1001)" Click="StyleCreation_Click"/>
-                <Button Content="Bagging Entry (2001)" Click="BaggingEntry_Click"/>
-                <Button Content="MIS Productivity (3001)" Click="MisProductivity_Click"/>
+                <Button x:Name="StyleCreationButton" Tag="1001"
+                        Content="Style Creation (1001)" Click="StyleCreation_Click"/>
+                <Button x:Name="BaggingEntryButton" Tag="2001"
+                        Content="Bagging Entry (2001)" Click="BaggingEntry_Click"/>
+                <Button x:Name="MisProductivityButton" Tag="3001"
+                        Content="MIS Productivity (3001)" Click="MisProductivity_Click"/>
             </WrapPanel>
 
             <TextBlock x:Name="LastDialogText" Margin="0,20,0,0"

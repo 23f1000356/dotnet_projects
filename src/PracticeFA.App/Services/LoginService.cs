@@ -34,7 +34,9 @@ public static class LoginService
             if (table.Rows.Count == 0)
                 return LoginResult.Fail("Invalid User ID or password.");
 
-            return LoginResult.Ok(UserInfoMapper.FromRow(table.Rows[0]));
+            var user = UserInfoMapper.FromRow(table.Rows[0]);
+            LoadUserModulesIntoSession(user.UserId);
+            return LoginResult.Ok(user);
         }
         catch (SqlException)
         {
@@ -50,7 +52,24 @@ public static class LoginService
         }
     }
 
-    /// <summary>Loads module list for P07 — cached after login if needed.</summary>
+    /// <summary>P07 — load once per login, cache in AppState.</summary>
+    public static void LoadUserModulesIntoSession(string userId)
+    {
+        var table = GetUserModules(userId);
+        var ids = new List<int>();
+        var displayParts = new List<string>();
+
+        foreach (DataRow row in table.Rows)
+        {
+            var moduleId = Convert.ToInt32(row["ModuleId"]);
+            var moduleName = Convert.ToString(row["ModuleName"]) ?? "";
+            ids.Add(moduleId);
+            displayParts.Add($"{moduleId} {moduleName}");
+        }
+
+        AppState.SetAllowedModules(ids, string.Join(" · ", displayParts));
+    }
+
     public static DataTable GetUserModules(string userId) =>
         DataAccess.ExecSp("dbo.spGetUserModules", new SqlParameter("@UserId", userId));
 }

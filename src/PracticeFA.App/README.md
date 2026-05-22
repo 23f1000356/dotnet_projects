@@ -3,8 +3,9 @@
 **Stack:** WPF · `Frame` · `Page` · `UserControl` · Theme · `ShowDialog` · Menu · ToolBar  
 **Prerequisite:** [P01 — Clock-in board](../../projects/P01-ClockInBoard/) · [P32](../projects/P32-TwoWayBindingLab/) · [P33](../projects/P33-ValidationLab/) (separate labs)  
 **Location:** `src/PracticeFA.App/`  
-**Current:** P06 + P34 complete · **Next:** P07 role menu · P10 capstone  
+**Current:** P06 · P07 · P34 complete · **Next:** P08 CRUD · P10 capstone  
 **P06 SQL setup:** [database/README.md](../../database/README.md)  
+**P07 role menu:** [database/P07-README.md](../../database/P07-README.md)  
 **P34 full guide:** [P34-README.md](P34-README.md)
 
 ---
@@ -768,7 +769,19 @@ dotnet run --project src/PracticeFA.App/PracticeFA.App.csproj
 
 **Rules:** No SQL in `SignInWindow.xaml.cs` · Bad password = friendly `ErrorText` · Session until Exit.
 
-**Next:** P07 calls `spGetUserModules` to show/hide Master hub buttons by user.
+**P07:** After login, `spGetUserModules` fills `AppState.AllowedModuleIds` — see [P07-README.md](../../database/P07-README.md).
+
+---
+
+## P07 — Role-based menu (summary)
+
+| User | Sees on Master |
+|------|----------------|
+| operator1 | Style, Bagging (not MIS) |
+| operator2 | Bagging only |
+| manager1 | Style, Bagging, MIS |
+
+`ModuleAuth.CanAccess(moduleId)` — no username checks in menu code.
 
 ---
 
@@ -854,9 +867,14 @@ Visual Studio: startup **PracticeFA.App** → **F5**.
 - [ ] Bad password shows friendly message  
 - [ ] `SignInWindow.xaml.cs` has no SQL strings  
 
+**P07**
+
+- [ ] operator1 vs operator2 see different launcher buttons  
+- [ ] “Your modules” list matches SSMS `spGetUserModules`  
+
 **Next**
 
-- [ ] P07 role menu · P10 capstone  
+- [ ] P08 employee CRUD · P10 capstone  
 
 ---
 
