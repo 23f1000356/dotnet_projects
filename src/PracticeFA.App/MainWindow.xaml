@@ -1,7 +1,7 @@
 ﻿<Window x:Class="PracticeFA.App.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Practice FA — P02 · Main shell"
+        Title="Practice FA — P03 · Theme + shell"
         Height="560" Width="900"
         WindowStartupLocation="CenterScreen">
     <Grid>
@@ -11,24 +11,24 @@
         </Grid.ColumnDefinitions>
 
         <!-- Left menu ≈ FA module hubs (Master, Bagging, MIS, …) -->
-        <Border Grid.Column="0" Background="#F3F4F6" Padding="12">
+        <Border Grid.Column="0" Background="{StaticResource SidebarBrush}" Padding="12">
             <StackPanel>
-                <TextBlock FontSize="18" FontWeight="SemiBold" Text="Floor Assistant"/>
-                <TextBlock Margin="0,4,0,16" Foreground="#666" TextWrapping="Wrap"
-                           Text="P02 — Frame navigation"/>
+                <TextBlock FontSize="18" FontWeight="SemiBold"
+                           Foreground="{StaticResource PrimaryBrush}"
+                           Text="Floor Assistant"/>
+                <TextBlock Margin="0,4,0,16" Style="{StaticResource SubtitleStyle}"
+                           Text="P03 — Theme.xaml (change PrimaryColor once)"/>
 
-                <Button Margin="0,0,0,8" Padding="10,8" Content="Master"
-                        Click="Master_Click"/>
-                <Button Margin="0,0,0,8" Padding="10,8" Content="Reports"
-                        Click="Reports_Click"/>
+                <Button Content="Master" Click="Master_Click"/>
+                <Button Content="Reports" Click="Reports_Click"/>
 
                 <Separator Margin="0,12"/>
 
-                <TextBlock x:Name="NavHintText" Foreground="#0066AA" TextWrapping="Wrap"
-                           Text="Select a module"/>
+                <TextBlock x:Name="NavHintText"
+                           Foreground="{StaticResource PrimaryBrush}"
+                           TextWrapping="Wrap" Text="Select a module"/>
 
-                <Button Margin="0,16,0,0" Padding="10,8" Content="Exit"
-                        Click="Exit_Click"/>
+                <Button Margin="0,16,0,0" Content="Exit" Click="Exit_Click"/>
             </StackPanel>
         </Border>
 

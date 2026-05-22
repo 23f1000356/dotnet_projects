@@ -743,7 +743,7 @@ src/PracticeFA.App/
 
 ---
 
-## P03 — Resource dictionary theme 🔲
+## P03 — Resource dictionary theme ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1947,7 +1947,7 @@ Copy to `docs/my-progress.md` and tick dates.
 | P01 | Clock-in board | | ✅ | |
 | P02 | Frame + hubs | | | |
 | P32 | TwoWay binding | | | |
-| P03 | Theme dictionary | | | |
+| P03 | Theme dictionary | ✅ | `src/PracticeFA.App/Assets/Theme.xaml` | |
 | P04 | Module launcher | | | |
 | P33 | Validation | | | |
 | P34 | UserControl + menu | | | |

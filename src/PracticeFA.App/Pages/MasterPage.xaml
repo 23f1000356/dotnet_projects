@@ -4,23 +4,20 @@
       Title="Master">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="24">
-            <TextBlock FontSize="24" FontWeight="SemiBold" Text="Master"/>
-            <TextBlock Margin="0,8,0,20" Foreground="#555" TextWrapping="Wrap"
-                       Text="Product master data hub — style, SKU, customers. In FA this is a Pages/* launcher that opens Views/* windows (P04)."/>
+            <TextBlock Style="{StaticResource PageTitleStyle}" Text="Master"/>
+            <TextBlock Margin="0,8,0,20" Style="{StaticResource SubtitleStyle}"
+                       Text="Product master data hub — buttons use implicit Style from Assets/Theme.xaml (P04 opens Views/*)."/>
 
-            <TextBlock FontWeight="SemiBold" Text="Module shortcuts (placeholders)"/>
+            <TextBlock FontWeight="SemiBold" Foreground="{StaticResource PrimaryBrush}"
+                       Text="Module shortcuts (placeholders)"/>
             <WrapPanel Margin="0,12,0,0">
-                <Button Margin="0,0,8,8" Padding="14,10" Content="Style Creation"
-                        Click="Placeholder_Click" Tag="Style Creation"/>
-                <Button Margin="0,0,8,8" Padding="14,10" Content="SKU Creation"
-                        Click="Placeholder_Click" Tag="SKU Creation"/>
-                <Button Margin="0,0,8,8" Padding="14,10" Content="Customer Master"
-                        Click="Placeholder_Click" Tag="Customer Master"/>
-                <Button Margin="0,0,8,8" Padding="14,10" Content="Employee Mapping"
-                        Click="Placeholder_Click" Tag="Employee Mapping"/>
+                <Button Content="Style Creation" Click="Placeholder_Click" Tag="Style Creation"/>
+                <Button Content="SKU Creation" Click="Placeholder_Click" Tag="SKU Creation"/>
+                <Button Content="Customer Master" Click="Placeholder_Click" Tag="Customer Master"/>
+                <Button Content="Employee Mapping" Click="Placeholder_Click" Tag="Employee Mapping"/>
             </WrapPanel>
 
-            <TextBlock Margin="0,24,0,0" FontSize="12" Foreground="#888"
+            <TextBlock Margin="0,24,0,0" FontSize="12" Foreground="{StaticResource MutedTextBrush}"
                        Text="P01 clock-in lives in projects/P01-ClockInBoard. P04 will open real feature windows from here."/>
         </StackPanel>
     </ScrollViewer>

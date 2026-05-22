@@ -3,23 +3,35 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Reports">
     <StackPanel Margin="24">
-        <TextBlock FontSize="24" FontWeight="SemiBold" Text="Reports"/>
-        <TextBlock Margin="0,8,0,20" Foreground="#555" TextWrapping="Wrap"
-                   Text="Floor MIS and analytics hub — read-only reports in FA. P13 will add date range + grid from SQL."/>
+        <TextBlock Style="{StaticResource PageTitleStyle}" Text="Reports"/>
+        <TextBlock Margin="0,8,0,20" Style="{StaticResource SubtitleStyle}"
+                   Text="DataGrid headers styled globally in Theme.xaml — no per-column Background. P13 adds SQL + date filter."/>
 
-        <Border BorderBrush="#CCC" BorderThickness="1" CornerRadius="4" Padding="16" Background="#FAFAFA">
+        <Border Style="{StaticResource CardBorderStyle}">
             <StackPanel>
-                <TextBlock FontWeight="SemiBold" Text="Sample report cards"/>
-                <Button Margin="0,12,0,0" HorizontalAlignment="Left" Padding="12,8"
+                <TextBlock FontWeight="SemiBold" Foreground="{StaticResource PrimaryBrush}"
+                           Text="Sample report cards"/>
+                <Button Margin="0,12,0,0" HorizontalAlignment="Left"
                         Content="Hourly productivity (P13)"
                         Click="Placeholder_Click" Tag="Hourly productivity"/>
-                <Button Margin="0,8,0,0" HorizontalAlignment="Left" Padding="12,8"
+                <Button Margin="0,8,0,0" HorizontalAlignment="Left"
                         Content="Open order WIP summary"
                         Click="Placeholder_Click" Tag="Open order WIP"/>
-                <Button Margin="0,8,0,0" HorizontalAlignment="Left" Padding="12,8"
+                <Button Margin="0,8,0,0" HorizontalAlignment="Left"
                         Content="Rejection report"
                         Click="Placeholder_Click" Tag="Rejection report"/>
             </StackPanel>
         </Border>
+
+        <TextBlock Margin="0,24,0,8" FontWeight="SemiBold"
+                   Foreground="{StaticResource PrimaryBrush}"
+                   Text="Open order WIP (sample grid)"/>
+        <DataGrid x:Name="WipGrid" MinHeight="140">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Work center" Binding="{Binding WorkCenter}" Width="*"/>
+                <DataGridTextColumn Header="Open orders" Binding="{Binding OpenOrders}" Width="120"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </StackPanel>
 </Page>
