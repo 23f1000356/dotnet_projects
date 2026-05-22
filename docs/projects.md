@@ -846,7 +846,7 @@ Views/MisWindow.xaml(.cs)
 
 ---
 
-## P32 — TwoWay binding lab 🔲
+## P32 — TwoWay binding lab ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1946,7 +1946,7 @@ Copy to `docs/my-progress.md` and tick dates.
 | P31 | Exceptions + JSON log | | | |
 | P01 | Clock-in board | | ✅ | |
 | P02 | Frame + hubs | | | |
-| P32 | TwoWay binding | | | |
+| P32 | TwoWay binding | ✅ | `projects/P32-TwoWayBindingLab/` | |
 | P03 | Theme dictionary | ✅ | `src/PracticeFA.App/Assets/Theme.xaml` | |
 | P04 | Module launcher | ✅ | `src/PracticeFA.App/Views/*` | |
 | P33 | Validation | | | |
