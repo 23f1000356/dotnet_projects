@@ -1,0 +1,60 @@
+<Page x:Class="PracticeFA.App.Views.ErpStockView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="clr-namespace:PracticeFA.App.Controls"
+      Title="SAP stock check">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Style="{StaticResource PageTitleStyle}" Text="SAP stock check (mock)"/>
+        <TextBlock Grid.Row="1" Margin="0,8,0,12" Style="{StaticResource SubtitleStyle}"
+                   Text="P45 — IErpService + Task.Run + IProgress&lt;string&gt; + Cancel (FA: PULLFromSAP / SAPRFCHandler). UI stays responsive for ~5s."/>
+
+        <Border Grid.Row="2" Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="0,0,12,0">
+                    <TextBlock Text="SKU / material"/>
+                    <TextBox Text="{Binding Sku, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <Button Grid.Column="1" Margin="0,20,8,0" VerticalAlignment="Bottom"
+                        Content="Verify stock (~5s)"
+                        Command="{Binding VerifyStockCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+                <Button Grid.Column="2" Margin="0,20,0,0" VerticalAlignment="Bottom"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Content="Cancel"
+                        Command="{Binding CancelCommand}"/>
+            </Grid>
+        </Border>
+
+        <DataGrid Grid.Row="3" ItemsSource="{Binding StockLines}" MinHeight="160"
+                  AutoGenerateColumns="False" CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="SKU" Binding="{Binding Sku}" Width="*"/>
+                <DataGridTextColumn Header="Plant" Binding="{Binding Plant}" Width="80"/>
+                <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="70"/>
+                <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width="60"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBlock Grid.Row="4" Margin="0,12,0,0" Text="{Binding StatusMessage}"
+                   TextWrapping="Wrap" FontWeight="SemiBold"
+                   Foreground="{StaticResource PrimaryDarkBrush}"/>
+
+        <controls:BusyOverlay Grid.RowSpan="5"
+                              IsBusy="{Binding IsBusy}"
+                              Message="{Binding BusyMessage}"/>
+    </Grid>
+</Page>

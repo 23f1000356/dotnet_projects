@@ -9,27 +9,50 @@ public partial class EmployeeListWindow : Window
 {
     private DataView? _gridView;
 
-    public EmployeeListWindow()
+    public EmployeeListWindow(int moduleId = ModuleIds.EmployeeMaintenance)
     {
+        ModuleId = moduleId;
         InitializeComponent();
-        LoadGrid();
+        ModuleBadgeText.Text = ModuleId.ToString();
+        HeaderText.Text = "Employee maintenance";
+        Title = $"Employee maintenance ({ModuleId})";
+        RunSearch();
     }
 
-    private void LoadGrid()
+    public int ModuleId { get; }
+
+    private void RunSearch()
     {
         try
         {
-            var table = EmployeeService.GetEmployees(activeOnly: true);
+            var activeOnly = ActiveOnlyCheck.IsChecked == true;
+            var table = EmployeeService.Search(
+                BadgeFragmentBox.Text,
+                ProcessCenterBox.Text,
+                activeOnly);
+
             _gridView = table.DefaultView;
             EmployeeGrid.ItemsSource = _gridView;
-            StatusText.Text = $"{table.Rows.Count} active employee(s) — loaded via dbo.spGetEmployees";
+
+            var count = table.Rows.Count;
+            NoRecordsText.Visibility = count == 0 ? Visibility.Visible : Visibility.Collapsed;
+
+            var badge = string.IsNullOrWhiteSpace(BadgeFragmentBox.Text) ? "(any)" : BadgeFragmentBox.Text.Trim();
+            var center = string.IsNullOrWhiteSpace(ProcessCenterBox.Text) ? "(any)" : ProcessCenterBox.Text.Trim();
+            var activeLabel = activeOnly ? "active only" : "active + inactive";
+
+            StatusText.Text = count == 0
+                ? $"No records — dbo.spSearchEmployees · badge={badge}, center={center}, {activeLabel}"
+                : $"{count} employee(s) — P41: Deleted rows hidden when Active only · CreatedBy in grid · badge={badge}, {activeLabel}";
         }
         catch (Exception ex)
         {
-            StatusText.Text = "Failed to load employees.";
+            EmployeeGrid.ItemsSource = null;
+            NoRecordsText.Visibility = Visibility.Collapsed;
+            StatusText.Text = "Search failed.";
             MessageBox.Show(
-                $"Could not load employees.\n\n{ex.Message}\n\nRun database/scripts/002_P08_Employees.sql",
-                "P08",
+                $"Could not search employees.\n\n{ex.Message}\n\nRun database/scripts/005_P35_SearchEmployees.sql (after 002).",
+                "P35 Search",
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
         }
@@ -42,13 +65,15 @@ public partial class EmployeeListWindow : Window
         return EmployeeMapper.FromRow(rowView.Row);
     }
 
-    private void Refresh_Click(object sender, RoutedEventArgs e) => LoadGrid();
+    private void Search_Click(object sender, RoutedEventArgs e) => RunSearch();
+
+    private void Refresh_Click(object sender, RoutedEventArgs e) => RunSearch();
 
     private void Add_Click(object sender, RoutedEventArgs e)
     {
         if (!OpenEditDialog(null))
             return;
-        LoadGrid();
+        RunSearch();
     }
 
     private void Edit_Click(object sender, RoutedEventArgs e)
@@ -62,7 +87,7 @@ public partial class EmployeeListWindow : Window
 
         if (!OpenEditDialog(selected))
             return;
-        LoadGrid();
+        RunSearch();
     }
 
     private void Delete_Click(object sender, RoutedEventArgs e)
@@ -91,7 +116,7 @@ public partial class EmployeeListWindow : Window
         }
 
         StatusText.Text = result.Message;
-        LoadGrid();
+        RunSearch();
     }
 
     private bool OpenEditDialog(EmployeeRecord? existing)

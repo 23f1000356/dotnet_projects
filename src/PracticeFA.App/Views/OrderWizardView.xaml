@@ -1,0 +1,85 @@
+<Page x:Class="PracticeFA.App.Views.OrderWizardView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Order wizard">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Style="{StaticResource PageTitleStyle}" Text="New order wizard"/>
+        <TextBlock Grid.Row="1" Margin="0,8,0,12" Style="{StaticResource SubtitleStyle}"
+                   Text="P42 TabControl — Order info → Lines → Confirm. Next/Back validate each step; Save calls P36 spSaveOrder."/>
+
+        <Border Grid.Row="2" Style="{StaticResource CardBorderStyle}">
+            <TabControl SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
+                <TabItem Header="1. Order info">
+                    <StackPanel Margin="12">
+                        <TextBlock Text="Bag tag / PO"/>
+                        <TextBox Margin="0,6,0,12" Text="{Binding BagTag, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Operator badge"/>
+                        <TextBox Margin="0,6,0,12" Text="{Binding OperatorBadge, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Plant code"/>
+                        <TextBox Margin="0,6,0,0" Text="{Binding PlantCode, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="2. Lines">
+                    <DockPanel Margin="12">
+                        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,8,0,0">
+                            <Button Content="Add line" Command="{Binding AddLineCommand}"
+                                    IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+                            <Button Style="{StaticResource SecondaryButtonStyle}" Content="Remove last"
+                                    Command="{Binding RemoveLineCommand}"
+                                    IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+                        </StackPanel>
+                        <DataGrid ItemsSource="{Binding Lines}" MinHeight="160" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="#" Binding="{Binding LineNumber}" Width="40"/>
+                                <DataGridTextColumn Header="SKU / style" Binding="{Binding SkuOrStyle}" Width="*"/>
+                                <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="70"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
+
+                <TabItem Header="3. Confirm">
+                    <StackPanel Margin="12">
+                        <TextBlock FontWeight="SemiBold" Foreground="{StaticResource PrimaryDarkBrush}"
+                                   Text="Review before save"/>
+                        <TextBlock Margin="0,12,0,0" Text="{Binding ConfirmSummary}"
+                                   TextWrapping="Wrap" FontFamily="Consolas"/>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+        </Border>
+
+        <TextBlock Grid.Row="3" Margin="0,8,0,0" Foreground="#B00020" FontWeight="SemiBold"
+                   Text="{Binding ValidationMessage}"/>
+
+        <Grid Grid.Row="4" Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock VerticalAlignment="Center" Text="{Binding StatusMessage}" TextWrapping="Wrap"
+                       Foreground="{StaticResource PrimaryDarkBrush}" FontWeight="SemiBold"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Style="{StaticResource SecondaryButtonStyle}" Content="Start over"
+                        Command="{Binding StartOverCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+                <Button Content="Back" Command="{Binding BackCommand}"
+                        Visibility="{Binding CanShowBack, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <Button Content="Next" Command="{Binding NextCommand}"
+                        Visibility="{Binding CanShowNext, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <Button Content="Save order" Command="{Binding SaveCommand}"
+                        Visibility="{Binding CanShowSave, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

@@ -9,8 +9,10 @@ public partial class MisWindow : Window
     {
         ModuleId = moduleId;
         InitializeComponent();
-        HeaderText.Text = $"MIS Productivity (Module {ModuleId})";
-        Title = HeaderText.Text;
+        ModuleBadgeText.Text = ModuleId.ToString();
+        HeaderText.Text = "MIS Productivity";
+        Title = $"MIS Productivity ({ModuleId})";
+        ShiftDatePicker.SelectedDate = DateTime.Today;
     }
 
     public int ModuleId { get; }

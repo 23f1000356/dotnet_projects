@@ -1,0 +1,51 @@
+<Page x:Class="PracticeFA.App.Views.SettingsView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Settings">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleStyle}" Text="Settings"/>
+            <TextBlock Margin="0,8,0,16" Style="{StaticResource SubtitleStyle}"
+                       Text="P05b — preferences saved to JSON in AppData (no SQL). Close and reopen the app to verify plant persists."/>
+
+            <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock FontWeight="SemiBold" Foreground="{StaticResource PrimaryDarkBrush}"
+                               Text="User preferences"/>
+                    <TextBlock Margin="0,8,0,12" Foreground="{StaticResource MutedTextBrush}"
+                               Text="{Binding SettingsFilePath}" TextWrapping="Wrap"/>
+
+                    <TextBlock Text="Preferred plant code"/>
+                    <TextBox Margin="0,6,0,12"
+                             Text="{Binding PlantCode, UpdateSourceTrigger=PropertyChanged}"
+                             ToolTip="Shown on restart — e.g. P01, P02"/>
+
+                    <TextBlock Text="Default printer"/>
+                    <TextBox Margin="0,6,0,12"
+                             Text="{Binding DefaultPrinter, UpdateSourceTrigger=PropertyChanged}"
+                             ToolTip="Floor label printer name"/>
+
+                    <TextBlock Text="Theme"/>
+                    <ComboBox Margin="0,6,0,0"
+                              ItemsSource="{Binding ThemeOptions}"
+                              SelectedItem="{Binding SelectedTheme}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Save to JSON"
+                            Command="{Binding SaveCommand}"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+                    <Button Style="{StaticResource SecondaryButtonStyle}" Content="Reload from disk"
+                            Command="{Binding ReloadCommand}"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap"
+                       Foreground="{StaticResource PrimaryDarkBrush}" FontWeight="SemiBold"/>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

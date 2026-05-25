@@ -1,0 +1,101 @@
+<Page x:Class="PracticeFA.App.Views.OrdersLegacyView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Orders (legacy)">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Style="{StaticResource PageTitleStyle}" Text="Orders (legacy master-detail)"/>
+        <TextBlock Grid.Row="1" Margin="0,8,0,12" Style="{StaticResource SubtitleStyle}"
+                   Text="P44 — same flow as P40 but code-behind + DataTable/DataView (no ViewModel). Compare with View → Orders (P40)."/>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Style="{StaticResource CardBorderStyle}">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" FontWeight="SemiBold"
+                               Foreground="{StaticResource PrimaryDarkBrush}" Text="Orders (master)"/>
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,8,0,0">
+                        <Button x:Name="RefreshButton" Content="Refresh" Click="Refresh_Click"/>
+                        <Button x:Name="NewOrderButton" Style="{StaticResource SecondaryButtonStyle}"
+                                Content="New order" Click="NewOrder_Click"/>
+                    </StackPanel>
+                    <ListView x:Name="MasterList" Margin="0,8,0,8"
+                              SelectionChanged="MasterList_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="4">
+                                    <TextBlock FontWeight="SemiBold" Text="{Binding DisplayLabel}"/>
+                                    <TextBlock FontSize="11" Foreground="{StaticResource MutedTextBrush}"
+                                               Text="{Binding OperatorBadge, StringFormat=Operator {0}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </DockPanel>
+            </Border>
+
+            <Border Grid.Column="2" Style="{StaticResource CardBorderStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock FontWeight="SemiBold" Foreground="{StaticResource PrimaryDarkBrush}"
+                               Text="Order detail (lines)"/>
+
+                    <Grid Grid.Row="1" Margin="0,8,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Margin="0,0,8,0">
+                            <TextBlock Text="Bag tag"/>
+                            <TextBox x:Name="BagTagBox"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="0,0,8,0">
+                            <TextBlock Text="Operator badge"/>
+                            <TextBox x:Name="OperatorBadgeBox"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Plant"/>
+                            <TextBox x:Name="PlantCodeBox"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <DataGrid x:Name="LinesGrid" Grid.Row="2" MinHeight="140"
+                              AutoGenerateColumns="True" CanUserAddRows="False"/>
+
+                    <StackPanel Grid.Row="3" Margin="0,8,0,0">
+                        <TextBlock x:Name="DetailTotalText" FontWeight="SemiBold"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <Button x:Name="AddLineButton" Content="Add line" Click="AddLine_Click"/>
+                            <Button x:Name="RemoveLineButton" Style="{StaticResource SecondaryButtonStyle}"
+                                    Content="Remove last" Click="RemoveLine_Click"/>
+                            <Button x:Name="SaveOrderButton" Content="Save order" Click="SaveOrder_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <TextBlock x:Name="StatusText" Grid.Row="3" Margin="0,12,0,0"
+                   TextWrapping="Wrap" FontWeight="SemiBold"
+                   Foreground="{StaticResource PrimaryDarkBrush}"/>
+    </Grid>
+</Page>

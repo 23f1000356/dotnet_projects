@@ -152,7 +152,7 @@ public partial class MasterPage : Page
 
         var owner = Window.GetWindow(this);
 
-        var list = new EmployeeListWindow();
+        var list = new EmployeeListWindow(ModuleIds.EmployeeMaintenance);
 
         if (owner is not null)
 

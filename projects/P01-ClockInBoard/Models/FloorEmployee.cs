@@ -7,6 +7,7 @@ public sealed class FloorEmployee
     public DateTime ClockedInAt { get; init; }
     public required string ClockedInBy { get; init; }
 
+    /// <summary>Wireframe B row: E101  Anil — Wax        14:30</summary>
     public string ListLabel =>
-        $"{DisplayName} ({BadgeId}) — since {ClockedInAt:HH:mm} — by {ClockedInBy}";
+        $"{BadgeId,-6}  {DisplayName,-22}  {ClockedInAt:HH:mm}";
 }

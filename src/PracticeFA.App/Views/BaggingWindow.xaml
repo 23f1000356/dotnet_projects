@@ -3,38 +3,91 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:PracticeFA.App.Controls"
         Title="Bagging Entry"
-        Height="400" Width="520"
+        Height="620" Width="720"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
-    <Grid Margin="20">
+        MinHeight="560" MinWidth="640"
+        Background="{StaticResource AppBackgroundBrush}">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="HeaderText" Grid.Row="0" Style="{StaticResource PageTitleStyle}"
-                   Text="Bagging Entry"/>
-        <TextBlock Grid.Row="1" Margin="0,8,0,8" Style="{StaticResource SubtitleStyle}"
-                   Text="Same EmployeeSearchBox as Master — different DataContext (Bagging host)."/>
+        <Border Grid.Row="0" Background="{StaticResource PrimaryDarkBrush}" Padding="16,14">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Style="{StaticResource ModuleIdBadgeStyle}">
+                    <TextBlock x:Name="ModuleBadgeText" FontWeight="Bold" Foreground="White" Text="2001"/>
+                </Border>
+                <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                    <TextBlock x:Name="HeaderText" Style="{StaticResource ModuleHeaderTitleStyle}"
+                               Text="Bagging Entry"/>
+                    <TextBlock Foreground="{StaticResource HeaderSubtitleOnDarkBrush}" FontSize="12"
+                               Text="P36 — one Save posts header + all lines in a single SQL transaction"/>
+                </StackPanel>
+            </Grid>
+        </Border>
 
-        <controls:EmployeeSearchBox Grid.Row="2"
-            BadgeText="{Binding SearchBadge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            SearchRequested="EmployeeSearch_SearchRequested"/>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="16,12,16,0">
+            <StackPanel>
+                <Border Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource PrimaryBrush}"
+                        BorderThickness="2,0,0,0" Padding="14" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock FontWeight="SemiBold" Foreground="{StaticResource PrimaryDarkBrush}"
+                                   Text="Order header"/>
+                        <controls:EmployeeSearchBox Margin="0,8,0,0"
+                            BadgeText="{Binding SearchBadge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            SearchRequested="EmployeeSearch_SearchRequested"/>
+                        <TextBlock x:Name="SearchResultText" Margin="0,8,0,0"
+                                   Foreground="{StaticResource MutedTextBrush}" TextWrapping="Wrap"
+                                   Text="Operator: (search badge)"/>
+                        <TextBlock Margin="0,12,0,0" Text="PO / bag tag"/>
+                        <TextBox x:Name="BagTagBox" Margin="0,6,0,0"/>
+                        <TextBlock x:Name="PlantText" Margin="0,8,0,0"
+                                   Foreground="{StaticResource MutedTextBrush}" FontSize="12"/>
+                    </StackPanel>
+                </Border>
 
-        <StackPanel Grid.Row="3">
-            <TextBlock x:Name="SearchResultText" Margin="0,0,0,12"
-                       Foreground="{StaticResource MutedTextBrush}" TextWrapping="Wrap"
-                       Text="Search: (none)"/>
-            <TextBlock Text="PO / bag tag"/>
-            <TextBox x:Name="InputTextBox" Margin="0,6,0,0" Padding="8,6"/>
-        </StackPanel>
+                <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12">
+                    <DockPanel LastChildFill="True">
+                        <TextBlock DockPanel.Dock="Top" FontWeight="SemiBold"
+                                   Foreground="{StaticResource PrimaryDarkBrush}"
+                                   Text="Order lines"/>
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,8,0,8">
+                            <Button Content="Add line" Click="AddLine_Click"/>
+                            <Button Style="{StaticResource SecondaryButtonStyle}" Margin="8,0,0,0"
+                                    Content="Remove selected" Click="RemoveLine_Click"/>
+                        </StackPanel>
+                        <DataGrid x:Name="LinesGrid" AutoGenerateColumns="False" CanUserAddRows="False"
+                                  HeadersVisibility="Column" MinHeight="120">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="#" Binding="{Binding LineNumber}" Width="40"/>
+                                <DataGridTextColumn Header="SKU / style" Binding="{Binding SkuOrStyle}" Width="*"/>
+                                <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="70"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Border>
 
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
-            <Button Content="Save" Click="Save_Click"/>
-            <Button Content="Cancel" Click="Cancel_Click"/>
-        </StackPanel>
+                <CheckBox x:Name="SimulateFailureCheck" Margin="0,0,0,8"
+                          Content="Simulate line 2 failure (P36 rollback test — header must NOT save)"/>
+                <TextBlock x:Name="ErrorText" Foreground="#B00020" TextWrapping="Wrap"/>
+                <TextBlock x:Name="SuccessText" Foreground="#1B5E20" FontWeight="SemiBold"
+                           TextWrapping="Wrap" Visibility="Collapsed"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="2" Background="{StaticResource SurfaceBrush}" Padding="16,12"
+                BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Save order" Click="Save_Click"/>
+                <Button Style="{StaticResource SecondaryButtonStyle}" Content="Close" Click="Cancel_Click"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>

@@ -6,5 +6,6 @@
   <Project Path="projects/P31-ExceptionsLogging/P31.Console.csproj" />
   <Project Path="projects/P32-TwoWayBindingLab/P32.App.csproj" />
   <Project Path="projects/P33-ValidationLab/P33.App.csproj" />
+  <Project Path="projects/P09-DataGridLab/P09.App.csproj" />
   <Project Path="src/PracticeFA.App/PracticeFA.App.csproj" />
 </Solution>

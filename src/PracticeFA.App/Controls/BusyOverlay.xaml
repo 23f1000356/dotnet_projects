@@ -1,0 +1,21 @@
+<UserControl x:Class="PracticeFA.App.Controls.BusyOverlay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             IsHitTestVisible="False">
+
+    <Grid x:Name="OverlayPanel" Visibility="Collapsed"
+          Background="#66000000">
+        <Border HorizontalAlignment="Center" VerticalAlignment="Center"
+                MinWidth="280" Padding="24"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource PrimaryBrush}"
+                BorderThickness="1" CornerRadius="6">
+            <StackPanel>
+                <ProgressBar Height="8" IsIndeterminate="True" Margin="0,0,0,16"/>
+                <TextBlock x:Name="MessageText" TextAlignment="Center"
+                           FontWeight="SemiBold" Foreground="{StaticResource PrimaryDarkBrush}"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

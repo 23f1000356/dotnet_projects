@@ -13,10 +13,10 @@ public partial class MainWindow : Window
 
     private readonly Dictionary<string, string> _employeeDirectory = new(StringComparer.OrdinalIgnoreCase)
     {
-        ["E101"] = "Wax operator — Anil",
-        ["E102"] = "Casting — Meena",
-        ["E103"] = "FSK setting — Joel",
-        ["E104"] = "QC — Sara",
+        ["E101"] = "Anil — Wax",
+        ["E102"] = "Meena — Casting",
+        ["E103"] = "Joel — FSK",
+        ["E104"] = "Sara — QC",
     };
 
     private UserSession? _currentUser;
@@ -26,6 +26,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         LoginBadgeBox.Text = "E001";
+        ApplySignedOutUi();
         UpdateFloorCount();
     }
 
@@ -49,10 +50,41 @@ public partial class MainWindow : Window
         }
 
         _currentUser = session;
-        SessionText.Text = $"Signed in: {session.DisplayName}  |  Plant {session.PlantCode}";
+        ApplySignedInUi(session);
+    }
+
+    private void SignOut_Click(object sender, RoutedEventArgs e)
+    {
+        _currentUser = null;
+        ApplySignedOutUi();
+    }
+
+    private void ApplySignedInUi(UserSession session)
+    {
+        SignInPanel.Visibility = Visibility.Collapsed;
+        SessionPanel.Visibility = Visibility.Visible;
+
+        SessionText.Text = $"LOGGED IN AS: {session.DisplayName} ({session.UserId})";
+        PlantHeaderText.Text = $"Plant: {session.PlantCode}";
+        SignOutButton.IsEnabled = true;
+
         ClockInBadgeBox.IsEnabled = true;
         ClockInButton.IsEnabled = true;
         ClockInBadgeBox.Focus();
+    }
+
+    private void ApplySignedOutUi()
+    {
+        SignInPanel.Visibility = Visibility.Visible;
+        SessionPanel.Visibility = Visibility.Collapsed;
+
+        SessionText.Text = "LOGGED IN AS: —";
+        PlantHeaderText.Text = "Plant: —";
+        SignOutButton.IsEnabled = false;
+
+        ClockInBadgeBox.IsEnabled = false;
+        ClockInButton.IsEnabled = false;
+        LoginBadgeBox.Focus();
     }
 
     private void ClockIn_Click(object sender, RoutedEventArgs e)
@@ -100,7 +132,7 @@ public partial class MainWindow : Window
         if (_onFloor.Count == 0)
             return;
 
-        var confirm = MessageBox.Show(this, "Clear everyone from the floor list?", "Clear list",
+        var confirm = MessageBox.Show(this, "Clear everyone from the floor list?", "Clear all",
             MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (confirm != MessageBoxResult.Yes)
             return;
@@ -117,5 +149,5 @@ public partial class MainWindow : Window
     }
 
     private void UpdateFloorCount() =>
-        FloorCountText.Text = $"{_onFloor.Count} on floor";
+        FloorCountText.Text = $"ON FLOOR ({_onFloor.Count})";
 }

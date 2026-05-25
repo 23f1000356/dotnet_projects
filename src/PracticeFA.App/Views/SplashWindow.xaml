@@ -1,0 +1,35 @@
+<Window x:Class="PracticeFA.App.Views.SplashWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Practice FA"
+        Height="320" Width="480"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+
+    <Border Background="{StaticResource SurfaceBrush}"
+            BorderBrush="{StaticResource PrimaryBrush}"
+            BorderThickness="2" CornerRadius="8" Padding="32">
+        <StackPanel>
+            <TextBlock FontSize="26" FontWeight="SemiBold"
+                       Foreground="{StaticResource PrimaryDarkBrush}"
+                       Text="Floor Assistant"/>
+            <TextBlock Margin="0,4,0,20" Style="{StaticResource SubtitleStyle}"
+                       Text="P10 capstone — starting up…"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <Ellipse x:Name="DbIndicator" Width="12" Height="12" Fill="#9E9E9E"/>
+                <TextBlock x:Name="DbStatusText" Margin="10,0,0,0" VerticalAlignment="Center"
+                           FontWeight="SemiBold" Text="Checking database…"/>
+            </StackPanel>
+
+            <TextBlock x:Name="DbDetailText" TextWrapping="Wrap" FontSize="12"
+                       Foreground="{StaticResource MutedTextBrush}"/>
+
+            <ProgressBar x:Name="StartupProgress" Height="6" Margin="0,16,0,0"
+                         IsIndeterminate="True"/>
+        </StackPanel>
+    </Border>
+</Window>

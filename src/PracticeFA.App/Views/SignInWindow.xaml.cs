@@ -5,7 +5,28 @@ namespace PracticeFA.App.Views;
 
 public partial class SignInWindow : Window
 {
-    public SignInWindow() => InitializeComponent();
+    public SignInWindow()
+    {
+        InitializeComponent();
+        RefreshDbTargetDisplay();
+    }
+
+    private void RefreshDbTargetDisplay() =>
+        DbTargetText.Text = DbSettings.SummaryLine +
+            "\n\nSwitch: set PRACTICE_FA_ENV=QA or edit App.config (see database/P24-README.md).";
+
+    private void TestConnection_Click(object sender, RoutedEventArgs e)
+    {
+        DbSettings.Reload();
+        RefreshDbTargetDisplay();
+
+        var (success, message) = DbSettings.TryTestConnection();
+        MessageBox.Show(
+            message,
+            success ? "Database connection" : "Database connection failed",
+            MessageBoxButton.OK,
+            success ? MessageBoxImage.Information : MessageBoxImage.Warning);
+    }
 
     private void Login_Click(object sender, RoutedEventArgs e)
     {

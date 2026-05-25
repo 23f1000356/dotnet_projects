@@ -2,11 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Practice FA — Sign in (P06)"
-        Height="420" Width="440"
+        Height="480" Width="460"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Background="{StaticResource AppBackgroundBrush}">
     <Grid Margin="24">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -14,10 +16,20 @@
         </Grid.RowDefinitions>
 
         <TextBlock Style="{StaticResource PageTitleStyle}" Text="Floor Assistant"/>
-        <TextBlock Grid.Row="1" Margin="0,8,0,20" Style="{StaticResource SubtitleStyle}"
-                   Text="P06 — dbo.spLogin via DataAccess.ExecSp (no SQL in this file)."/>
+        <TextBlock Grid.Row="1" Margin="0,8,0,12" Style="{StaticResource SubtitleStyle}"
+                   Text="P10 capstone — P06 login after splash DB check · P24 connection (App.config / env)."/>
 
-        <StackPanel Grid.Row="2">
+        <Border Grid.Row="2" Margin="0,0,0,12" Padding="10" Background="{StaticResource SidebarBrush}"
+                BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4">
+            <StackPanel>
+                <TextBlock x:Name="DbTargetText" FontSize="12" Foreground="{StaticResource MutedTextBrush}"
+                           TextWrapping="Wrap"/>
+                <Button Margin="0,8,0,0" HorizontalAlignment="Left" Padding="10,4"
+                        Content="Test database connection" Click="TestConnection_Click"/>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="3">
             <TextBlock Text="User ID"/>
             <TextBox x:Name="UserIdBox" Margin="0,6,0,12" Padding="8,6" Text="operator1"/>
 
@@ -25,14 +37,14 @@
             <PasswordBox x:Name="PasswordBox" Margin="0,6,0,12" Padding="8,6"/>
 
             <TextBlock Foreground="{StaticResource MutedTextBrush}" FontSize="12" TextWrapping="Wrap"
-                       Text="Test: operator1 / pass1 · manager1 / pass1 · operator2 / pass2"/>
+                       Text="SQL: operator1 / pass1 (after 001_PracticeFA.sql). Offline demo uses same IDs if DB is missing."/>
 
             <TextBlock x:Name="ErrorText" Margin="0,12,0,0"
                        Foreground="{StaticResource ErrorBrush}"
                        TextWrapping="Wrap"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Margin="0,0,8,0" Content="Cancel" Click="Cancel_Click"/>
             <Button Content="Login" Click="Login_Click" IsDefault="True"/>
         </StackPanel>

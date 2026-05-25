@@ -24,6 +24,7 @@ public static class AppState
         CurrentUser = null;
         AllowedModuleIds = new HashSet<int>();
         ModuleListDisplay = "";
+        StartupState.Clear();
     }
 
     public static bool IsSignedIn => CurrentUser is not null;

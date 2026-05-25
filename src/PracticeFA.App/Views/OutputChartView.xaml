@@ -1,0 +1,41 @@
+<Page x:Class="PracticeFA.App.Views.OutputChartView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+      Title="Hourly output">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Style="{StaticResource PageTitleStyle}" Text="Hourly output (MIS chart)"/>
+        <TextBlock Grid.Row="1" Margin="0,8,0,12" Style="{StaticResource SubtitleStyle}"
+                   Text="P21 — LiveCharts column chart from IOutputChartService (FA analytics / productivity dashboards)."/>
+
+        <Border Grid.Row="2" Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Refresh chart" Command="{Binding RefreshCommand}"/>
+                <TextBlock Margin="16,8,0,0" VerticalAlignment="Center" FontWeight="SemiBold"
+                           Foreground="{StaticResource PrimaryDarkBrush}"
+                           Text="{Binding TotalUnits, StringFormat=Today total: {0} units}"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="3" Style="{StaticResource CardBorderStyle}" Padding="8">
+            <lvc:CartesianChart Series="{Binding Series}"
+                                XAxes="{Binding XAxes}"
+                                YAxes="{Binding YAxes}"
+                                LegendPosition="Top"
+                                MinHeight="280"/>
+        </Border>
+
+        <TextBlock Grid.Row="4" Margin="0,12,0,0" Text="{Binding StatusMessage}"
+                   TextWrapping="Wrap" FontWeight="SemiBold"
+                   Foreground="{StaticResource PrimaryDarkBrush}"/>
+    </Grid>
+</Page>

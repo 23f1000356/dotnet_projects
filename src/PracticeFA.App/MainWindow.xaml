@@ -1,4 +1,4 @@
-﻿<Window x:Class="PracticeFA.App.MainWindow"
+<Window x:Class="PracticeFA.App.MainWindow"
 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 
@@ -8,13 +8,18 @@
 
         Height="600" Width="920"
 
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AppBackgroundBrush}">
 
-    <DockPanel>
+    <DockPanel Background="{StaticResource AppBackgroundBrush}">
 
         <Menu DockPanel.Dock="Top">
 
             <MenuItem Header="_File">
+
+                <MenuItem Header="_Settings (P05b)" Click="Settings_Click"/>
+
+                <Separator/>
 
                 <MenuItem Header="E_xit" Click="Exit_Click"/>
 
@@ -26,9 +31,35 @@
 
                 <MenuItem Header="_Reports" Click="Reports_Click"/>
 
+                <MenuItem Header="Hourly _chart (P21)" Click="OutputChart_Click"/>
+
+                <MenuItem Header="_Attendance (P05)" Click="Attendance_Click"/>
+
+                <MenuItem Header="_Orders (P40)" Click="Orders_Click"/>
+
+                <MenuItem Header="Orders _legacy (P44)" Click="OrdersLegacy_Click"/>
+
+                <MenuItem Header="Order _wizard (P42)" Click="OrderWizard_Click"/>
+
+                <MenuItem Header="_Async demo (P20)" Click="AsyncDemo_Click"/>
+
+                <MenuItem Header="SAP stock _check (P45)" Click="ErpStock_Click"/>
+
             </MenuItem>
 
             <MenuItem Header="_Help">
+
+                <MenuItem Header="Database _connection (P24)" Click="ConnectionInfo_Click"/>
+
+                <Separator/>
+
+                <MenuItem Header="Simulate _validation error (P43)" Click="SimulateValidationError_Click"/>
+
+                <MenuItem Header="Simulate _unhandled error (P43)" Click="SimulateUnhandledError_Click"/>
+
+                <MenuItem Header="Open _error log folder (P43)" Click="OpenErrorLog_Click"/>
+
+                <Separator/>
 
                 <MenuItem Header="_About Practice FA" Click="About_Click"/>
 
@@ -86,7 +117,21 @@
 
                     <Button Content="Reports" Click="Reports_Click"/>
 
+                    <Button Content="Hourly chart (P21)" Click="OutputChart_Click"/>
 
+                    <Button Content="Attendance (P05)" Click="Attendance_Click"/>
+
+                    <Button Content="Settings (P05b)" Click="Settings_Click"/>
+
+                    <Button Content="Orders (P40)" Click="Orders_Click"/>
+
+                    <Button Content="Orders legacy (P44)" Click="OrdersLegacy_Click"/>
+
+                    <Button Content="Order wizard (P42)" Click="OrderWizard_Click"/>
+
+                    <Button Content="Async demo (P20)" Click="AsyncDemo_Click"/>
+
+                    <Button Content="SAP stock (P45)" Click="ErpStock_Click"/>
 
                     <Separator Margin="0,12"/>
 
@@ -121,6 +166,26 @@
                    Margin="8"/>
 
         </Grid>
+
+        <StatusBar DockPanel.Dock="Bottom" Background="{StaticResource SidebarBrush}">
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <Ellipse x:Name="SqlIndicator" Width="10" Height="10" Fill="#9E9E9E"
+                             VerticalAlignment="Center"/>
+                    <TextBlock x:Name="SqlStatusText" Margin="8,0,0,0" VerticalAlignment="Center"
+                               FontWeight="SemiBold" Text="SQL"/>
+                </StackPanel>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock x:Name="FooterUserText" FontSize="11"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem HorizontalContentAlignment="Right">
+                <TextBlock x:Name="FooterDbText" FontSize="11"
+                           Foreground="{StaticResource MutedTextBrush}"/>
+            </StatusBarItem>
+        </StatusBar>
 
     </DockPanel>
 

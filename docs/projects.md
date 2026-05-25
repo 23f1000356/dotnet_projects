@@ -68,13 +68,13 @@ Run **P-projects** (code) and **S-projects** (SAP GUI / RFC) in parallel. SAP GU
 | P02 | Frame + hub pages ✅ ([`src/PracticeFA.App`](../src/PracticeFA.App/)) | WPF |
 | P03 | Resource dictionary theme | WPF |
 | P04 | Module launcher → feature windows | WPF |
-| P05 | Attendance list (pure MVVM) | MVVM |
-| P05b | Settings screen (JSON) | MVVM |
+| P05 | Attendance list (pure MVVM) | MVVM ✅ |
+| P05b | Settings screen (JSON) | MVVM ✅ |
 | P06 | Real login + UserInfo | SQL + ADO.NET |
 | P07 | Role-based menu | SQL + ADO.NET |
 | P08 | Employee CRUD via stored procedures | SQL + ADO.NET |
-| P09 | DataGrid ← DataTable | SQL + ADO.NET |
-| P10 | Mini Floor Assistant | Capstone |
+| P09 | DataGrid ← DataTable ✅ ([`projects/P09-DataGridLab`](../projects/P09-DataGridLab/)) | SQL + ADO.NET |
+| P10 | Mini Floor Assistant | Capstone ✅ |
 | P11 | Bagging lite | Domain |
 | P12 | Quotation lite | Domain |
 | P13 | MIS report lite | Domain |
@@ -84,11 +84,11 @@ Run **P-projects** (code) and **S-projects** (SAP GUI / RFC) in parallel. SAP GU
 | P17 | Excel export | Integration |
 | P18 | PDF receipt | Integration |
 | P19 | Chat assistant | Integration |
-| P20 | Async + busy overlay | Advanced UI |
-| P21 | LiveCharts | Advanced |
+| P20 | Async + busy overlay | Advanced UI ✅ |
+| P21 | LiveCharts | Advanced ✅ |
 | P22 | WebView2 | Integration |
 | P23 | Attached behavior | Integration |
-| P24 | Connection config | SQL + ADO.NET |
+| P24 | Connection config ✅ (`DbSettings` in [`PracticeFA.App`](../src/PracticeFA.App/)) | SQL + ADO.NET |
 | P25 | Webhook insights | Integration |
 | P26 | Email report | Integration |
 | P27 | ClickOnce (study) | Integration |
@@ -99,16 +99,16 @@ Run **P-projects** (code) and **S-projects** (SAP GUI / RFC) in parallel. SAP GU
 | P32 | TwoWay binding lab | WPF |
 | P33 | Validation & ErrorTemplate | WPF |
 | P34 | UserControl + menu/toolbar | WPF |
-| P35 | Search & filter stored procedure | SQL + ADO.NET |
-| P36 | Transaction: header + lines save | SQL + ADO.NET |
-| P38 | Value converters & multi-binding | MVVM |
-| P39 | Dependency injection in WPF | MVVM |
-| P40 | Master-detail MVVM | MVVM |
-| P41 | Audit columns & soft delete | SQL + ADO.NET |
-| P42 | TabControl wizard | Advanced UI |
-| P43 | Global exception handler | Advanced UI |
-| P44 | ListView master-detail (code-behind) | Advanced UI |
-| P45 | Async SAP-style mock | Advanced |
+| P35 | Search & filter stored procedure | SQL + ADO.NET ✅ |
+| P36 | Transaction: header + lines save | SQL + ADO.NET ✅ |
+| P38 | Value converters & multi-binding | MVVM ✅ |
+| P39 | Dependency injection in WPF | MVVM ✅ |
+| P40 | Master-detail MVVM | MVVM ✅ |
+| P41 | Audit columns & soft delete | SQL + ADO.NET ✅ |
+| P42 | TabControl wizard | Advanced UI ✅ |
+| P43 | Global exception handler | Advanced UI ✅ |
+| P44 | ListView master-detail (code-behind) | Advanced UI ✅ |
+| P45 | Async SAP-style mock | Advanced ✅ |
 | P46 | Work center routing screen | Domain |
 | P47 | Stock scan simulation | Domain |
 | P48 | Multi-plant switch | Domain |
@@ -1115,7 +1115,7 @@ CREATE TABLE Employees (
 
 ---
 
-## P09 — DataGrid ← DataTable 🔲
+## P09 — DataGrid ← DataTable ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1165,7 +1165,7 @@ EmployeeGrid.ItemsSource = dt.DefaultView;
 
 ---
 
-## P24 — Connection config 🔲
+## P24 — Connection config ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1206,7 +1206,7 @@ Switch database target without recompiling — QA vs local.
 
 ---
 
-## P35 — Search & filter stored procedure 🔲
+## P35 — Search & filter stored procedure ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1226,8 +1226,8 @@ Pass **optional parameters** to procs (`NULL` = no filter) — common in FA repo
 
 ### Acceptance criteria
 
-- [ ] NULL/empty params return broader set; all filters narrow result
-- [ ] SSMS test matches WPF grid row count
+- [x] NULL/empty params return broader set; all filters narrow result
+- [x] SSMS test matches WPF grid row count
 
 ### FA homework
 
@@ -1235,7 +1235,7 @@ Pass **optional parameters** to procs (`NULL` = no filter) — common in FA repo
 
 ---
 
-## P36 — Transaction: header + lines save 🔲
+## P36 — Transaction: header + lines save ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1255,8 +1255,8 @@ Save **header + multiple lines** atomically (rollback on any line failure).
 
 ### Acceptance criteria
 
-- [ ] Failed line leaves DB unchanged (prove in SSMS)
-- [ ] Success returns new OrderId to UI
+- [x] Failed line leaves DB unchanged (prove in SSMS)
+- [x] Success returns new OrderId to UI
 
 ### FA homework
 
@@ -1264,7 +1264,7 @@ Save **header + multiple lines** atomically (rollback on any line failure).
 
 ---
 
-## P41 — Audit columns & soft delete 🔲
+## P41 — Audit columns & soft delete ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1284,8 +1284,8 @@ Track **who/when** and hide rows without physical delete.
 
 ### Acceptance criteria
 
-- [ ] Deleted employee disappears from grid but exists in SSMS
-- [ ] New row has CreatedBy = logged-in user
+- [x] Deleted employee disappears from grid but exists in SSMS
+- [x] New row has CreatedBy = logged-in user
 
 ### FA homework
 
@@ -1297,7 +1297,7 @@ Track **who/when** and hide rows without physical delete.
 
 # Pillar 4 — MVVM
 
-## P05 — Attendance list (pure MVVM) 🔲
+## P05 — Attendance list (pure MVVM) ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1340,10 +1340,10 @@ Build one screen the **modern FA way**: View = bindings only; logic in ViewModel
 
 ### Acceptance criteria
 
-- [ ] No SQL in View code-behind
-- [ ] No business logic in Click events on that screen
-- [ ] Refresh and Save work via commands only
-- [ ] Busy state disables buttons during load
+- [x] No SQL in View code-behind
+- [x] No business logic in Click events on that screen
+- [x] Refresh and Save work via commands only
+- [x] Busy state disables buttons during load
 
 ### FA homework
 
@@ -1356,7 +1356,7 @@ Build one screen the **modern FA way**: View = bindings only; logic in ViewModel
 
 ---
 
-## P05b — Settings screen (JSON) 🔲
+## P05b — Settings screen (JSON) ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1386,12 +1386,12 @@ Persist user preferences **without SQL** — common for client-side options.
 
 ### Acceptance criteria
 
-- [ ] Change plant → close app → reopen → same plant shown
-- [ ] Invalid JSON file handled (defaults, no crash)
+- [x] Change plant → close app → reopen → same plant shown
+- [x] Invalid JSON file handled (defaults, no crash)
 
 ---
 
-## P38 — Value converters & multi-binding 🔲
+## P38 — Value converters & multi-binding ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1411,8 +1411,8 @@ Persist user preferences **without SQL** — common for client-side options.
 
 ### Acceptance criteria
 
-- [ ] Converters in `Resources` and reused on 2 screens
-- [ ] Inactive row styled via DataTrigger or converter
+- [x] Converters in `Resources` and reused on 2 screens
+- [x] Inactive row styled via DataTrigger or converter
 
 ### FA homework
 
@@ -1420,7 +1420,7 @@ Persist user preferences **without SQL** — common for client-side options.
 
 ---
 
-## P39 — Dependency injection in WPF 🔲
+## P39 — Dependency injection in WPF ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1440,8 +1440,8 @@ Wire **ViewModels and services** with `Microsoft.Extensions.DependencyInjection`
 
 ### Acceptance criteria
 
-- [ ] Single composition root (`App.xaml.cs` or `Startup`)
-- [ ] Swap `IDataAccess` mock for tests/design time
+- [x] Single composition root (`App.xaml.cs` or `Startup`)
+- [x] Swap `IDataAccess` mock for tests/design time
 
 ### FA homework
 
@@ -1449,7 +1449,7 @@ Wire **ViewModels and services** with `Microsoft.Extensions.DependencyInjection`
 
 ---
 
-## P40 — Master-detail MVVM 🔲
+## P40 — Master-detail MVVM ✅
 
 | Field | Detail |
 |-------|--------|
@@ -1470,9 +1470,9 @@ Two related ViewModels or one VM with **selected header** driving **detail lines
 
 ### Acceptance criteria
 
-- [ ] Changing selection reloads lines
-- [ ] Add line updates total on header (computed property)
-- [ ] Save uses service layer only
+- [x] Changing selection reloads lines
+- [x] Add line updates total on header (computed property)
+- [x] Save uses service layer only
 
 ### FA homework
 
@@ -1484,13 +1484,14 @@ Two related ViewModels or one VM with **selected header** driving **detail lines
 
 # Capstone — all pillars
 
-## P10 — Mini Floor Assistant 🔲
+## P10 — Mini Floor Assistant ✅
 
 | Field | Detail |
 |-------|--------|
 | **Time** | 1 week |
 | **Prerequisites** | P02, P06, P07, P08; P05 recommended |
 | **FA stack** | Full app lifecycle |
+| **Doc** | [database/P10-README.md](../database/P10-README.md) |
 
 ### Goal
 
@@ -1500,12 +1501,12 @@ One cohesive app that mirrors FA startup and navigation — your **portfolio dem
 
 | Step | Screen | Behavior |
 |------|--------|----------|
-| 1 | `SplashWindow` | 1–2 s delay + `SELECT 1` or `spPing` — show “DB OK” / red on fail |
-| 2 | `SignInWindow` | P06 login |
-| 3 | `MainWindow` | P02 shell + P07 menu + status bar: user, plant, SQL green/red |
-| 4 | Hubs | Master + Reports pages (P03 styles) |
-| 5 | Features | P04 opens at least one real CRUD window (Employees) |
-| 6 | Exit | Clear session |
+| 1 | `SplashWindow` ✅ | ~1.5 s + connection test + `dbo.spPing` — green/red |
+| 2 | `SignInWindow` ✅ | P06 login |
+| 3 | `MainWindow` ✅ | P02 shell + P07 menu + **footer** SQL green/red, user, plant |
+| 4 | Hubs ✅ | Master + Reports |
+| 5 | Features ✅ | P04 CRUD windows (Employees, Bagging, …) |
+| 6 | Exit ✅ | `AppState.Clear()` |
 
 ### App startup flow
 
@@ -1729,17 +1730,24 @@ Model **work center pipeline** (FKIT → WAX → CASTING → FSK → RFD) in UI.
 | **P44** | ListView master-detail (code-behind) | 2d | Same as P40 but **without** MVVM — compare patterns |
 | **P20** | Async + busy overlay | 2d | `async` SP, `IsBusy`, disable buttons (see full spec below) |
 
-### P42 — TabControl wizard 🔲
+### P42 — TabControl wizard ✅
 
 - Three tabs: Order info → Lines → Confirm; Next/Back validates current tab; Save on last tab calls P36 proc.
 
-### P43 — Global exception handler 🔲
+### P43 — Global exception handler ✅
 
-- Log all unhandled UI exceptions; show “Contact IT” message; no raw stack trace to operators.
+- `DispatcherUnhandledException` → `FileAppLogger` + friendly MessageBox; operators never see stack traces.
+- Help menu demos: validation vs unhandled; open log folder.
 
-### P44 — ListView master-detail (legacy style) 🔲
+### P44 — ListView master-detail (legacy style) ✅
 
-- Duplicate P40 behavior in code-behind + `DataTable` only — document pros/cons vs P40.
+- `OrdersLegacyView` — same procs as P40; `DataTable`/`DataView` + code-behind (no ViewModel).
+- Menu/sidebar **Orders legacy (P44)** — compare with P40 MVVM screen.
+
+### P20 — Async + busy overlay ✅
+
+- `Controls/BusyOverlay` — mask + progress; `AsyncDemoView` (3s simulated SP).
+- Reused on **Attendance (P05)** and **Orders (P40)** with `IsBusy` + `BusyMessage`.
 
 ---
 
@@ -1751,9 +1759,15 @@ Model **work center pipeline** (FKIT → WAX → CASTING → FSK → RFD) in UI.
 | **P46** | *(listed under Domain)* | | |
 | **P21** | LiveCharts dashboard | 2d | Hourly output bar chart (FA MIS style) |
 
-### P45 — Async SAP-style mock 🔲
+### P45 — Async SAP-style mock ✅
 
-- Mock `IErpService` delay 5s; UI stays responsive; Cancel uses `CancellationTokenSource`.
+- `IErpService` + `MockErpService` (~5s); `ErpStockView` with `IProgress<string>` + **Cancel** (`CancellationTokenSource`).
+- Same facade pattern as P14 — ViewModel never calls SAP DLL directly.
+
+### P21 — LiveCharts dashboard ✅
+
+- `LiveChartsCore.SkiaSharpView.WPF` — hourly column chart; `IOutputChartService` mock data.
+- **View → Hourly chart (P21)**.
 
 ---
 
@@ -1838,15 +1852,15 @@ Model **work center pipeline** (FKIT → WAX → CASTING → FSK → RFD) in UI.
 | **Build** | `Services/ChatService.cs` + mock HTTP JSON; UI only binds to VM |
 | **FA** | OpenAI SDK, `DAL/AIServices`, `AiOrchestrationService` |
 
-## P20 — Async + busy overlay 🔲
+## P20 — Async + busy overlay ✅
 
-| **Build** | `async` SP load, disable UI, busy text/Toolkit |
-| **FA** | `BackgroundWorker` |
+| **Build** | `BusyOverlay` control; `AsyncDemoView` (3s simulated SP); `IsBusy` + disabled buttons on P05/P40 |
+| **FA** | `BackgroundWorker` (same problem — use `Task.Run` + overlay in new code) |
 
-## P21 — LiveCharts 🔲
+## P21 — LiveCharts ✅
 
-| **Build** | Bar chart from daily totals |
-| **FA** | Analytics dashboards |
+| **Build** | `OutputChartView` — `CartesianChart` + `ColumnSeries` from `IOutputChartService` |
+| **FA** | Analytics / MIS productivity dashboards |
 
 ## P22 — WebView2 🔲
 
@@ -1956,27 +1970,27 @@ Copy to `docs/my-progress.md` and tick dates.
 | P07 | Role menu | ✅ | `ModuleAuth` · `MasterPage` visibility | |
 | P08 | Employee CRUD | ✅ | `Views/EmployeeListWindow` · `002_P08_Employees.sql` | |
 | P09 | DataGrid binding | | | |
-| P35 | Search SP | | | |
-| P36 | Transaction save | | | |
+| P35 | Search SP | ✅ | `005_P35_SearchEmployees.sql` | `EmployeeListWindow` |
+| P36 | Transaction save | ✅ | `006_P36_Orders.sql` | `BaggingWindow` + `OrderService` |
 | P41 | Audit / soft delete | | | |
 | P05 | Attendance MVVM | | | |
 | P38 | Converters | | | |
 | P05b | Settings JSON | | | |
 | P39 | DI in WPF | | | |
 | P40 | Master-detail MVVM | | | |
-| P10 | Mini FA | | | |
+| P10 | Mini FA | ✅ | Splash→SignIn→Main | Full capstone flow |
 | P11 | Bagging lite | | | |
 | P12 | Quotation lite | | | |
 | P13 | MIS lite | | | |
 | P46 | Work center routing | | | |
 | P47 | Stock scan | | | |
 | P48 | Multi-plant | | | |
-| P42 | Tab wizard | | | |
-| P43 | Global exceptions | | | |
-| P44 | ListView legacy MD | | | |
-| P20 | Async busy | | | |
-| P45 | Async SAP mock | | | |
-| P21 | LiveCharts | | | |
+| P42 | Tab wizard | ✅ | `OrderWizardView` | P36 `spSaveOrder` |
+| P43 | Global exceptions | ✅ | `GlobalExceptionHandler` | `%AppData%/PracticeFA/logs` |
+| P44 | ListView legacy MD | ✅ | `OrdersLegacyView` | P40 procs · DataTable |
+| P20 | Async busy | ✅ | `BusyOverlay`, `AsyncDemoView` | P40 `spGetOrderHeaders` |
+| P45 | Async SAP mock | ✅ | `ErpStockView`, `IErpService` | Mock 5s RFC |
+| P21 | LiveCharts | ✅ | `OutputChartView` | Mock hourly output |
 | P14–P28 | Integrations (group) | | | |
 | P49 | Serilog | | | |
 | P50 | QRCoder | | | |
