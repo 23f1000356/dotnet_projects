@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "P00 — Console floor ticket",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-p00",
+      "program": "${workspaceFolder}/projects/P00-ConsoleFloorTicket/bin/Debug/net10.0/P00.Console.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/projects/P00-ConsoleFloorTicket",
+      "console": "integratedTerminal",
+      "stopAtEntry": false
+    },
+    {
+      "name": "P29 — LINQ collections lab",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-p29",
+      "program": "${workspaceFolder}/projects/P29-LinqCollectionsLab/bin/Debug/net10.0/P29.Console.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/projects/P29-LinqCollectionsLab",
+      "console": "integratedTerminal",
+      "stopAtEntry": false
+    },
+    {
+      "name": "P01 — WPF clock-in board",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-wpf",
+      "program": "${workspaceFolder}/src/PracticeFA.App/bin/Debug/net10.0-windows/PracticeFA.App.dll",
+      "cwd": "${workspaceFolder}/src/PracticeFA.App",
+      "console": "internalConsole"
+    }
+  ]
+}
